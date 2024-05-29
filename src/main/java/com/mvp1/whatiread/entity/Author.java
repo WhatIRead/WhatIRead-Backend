@@ -1,0 +1,32 @@
+package com.mvp1.whatiread.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Entity
+public class Author {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+  @Column(nullable = false)
+  private String name;
+  private String biography;
+  private String nationality;
+  private Date birthDate;
+  private Date deathDate;
+  private String awards;
+  @ManyToMany(mappedBy = "authors")
+  private Set<Book> books = new HashSet<>();
+}

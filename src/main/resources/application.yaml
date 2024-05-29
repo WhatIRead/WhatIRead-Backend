@@ -1,0 +1,34 @@
+spring:
+  profiles:
+    active: local
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+    time-zone: UTC
+springdoc:
+  api-docs:
+    enabled: true
+  # Enable/Disable swagger-ui
+  swagger-ui:
+    enabled: true
+  show-actuator: true
+
+# Actuator configuration
+management:
+  endpoints:
+    shutdown:
+      enabled: true
+    jmc:
+      exposure:
+        # If kibana dashboard is connected then it will stream metrics continuously then use this
+        include: health,metrics,info,env,beans
+    web:
+      exposure:
+        # If we want to see metrics on web page this use this.
+        include: health,metrics,info,env,beans,configprops
+  metrics:
+    enabled: true
+
+app:
+  jwtSecret: secret
+  jwtExpirationInMs: 3600000
