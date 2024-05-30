@@ -7,7 +7,6 @@ import com.mvp1.whatiread.security.JwtAuthenticationFilter;
 import com.mvp1.whatiread.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -49,11 +48,13 @@ public class SecurityConfig {
   }
 
 //  @Bean
-//  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//    http.csrf().disable()
-//        .authorizeRequests()
-//        .anyRequest().permitAll(); // Disable security
-//    return http.build();
+//  public SecurityFilterChain temp(HttpSecurity http) throws Exception{
+//    return http.cors(cors -> cors.disable()).csrf(csrf -> csrf.disable())
+//        .authorizeHttpRequests(auth -> {
+//          auth.requestMatchers("/**").permitAll();
+//        })
+//        .httpBasic(withDefaults())
+//        .build();
 //  }
 
   @Bean
@@ -65,11 +66,9 @@ public class SecurityConfig {
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> {
-          auth.requestMatchers("/h2-console/**").permitAll()
-              .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
-//              .requestMatchers(AUTH_WHITELIST).permitAll()
-              .requestMatchers(HttpMethod.GET, "/api/users/checkUsernameAvailability",
-                  "/api/users/checkEmailAvailability").permitAll()
+          auth.requestMatchers("/api/users/checkUsernameAvailability",
+                  "/api/users/checkEmailAvailability", "/api/auth/**", "/h2-console/**",
+                  "/swagger-ui/**").permitAll()
               .anyRequest().authenticated();
         })
         .httpBasic(withDefaults())
@@ -78,16 +77,6 @@ public class SecurityConfig {
     return http.build();
   }
 
-  //  @Bean
-//  CorsConfigurationSource corsConfigurationSource() {
-//    CorsConfiguration configuration = new CorsConfiguration();
-//    configuration.setAllowedOrigins(List.of("http://localhost:8085"));
-//    configuration.setAllowedMethods(List.of("GET", "POST"));
-//    configuration.setAllowedHeaders(List.of("Authorization", "Content-type"));
-//    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//    source.registerCorsConfiguration("/**", configuration);
-//    return source;
-//  }
   @Bean
   public AuthenticationManager authenticationManager(
       AuthenticationConfiguration authenticationConfiguration) throws Exception {
