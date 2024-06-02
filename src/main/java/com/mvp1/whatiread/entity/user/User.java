@@ -1,7 +1,7 @@
 package com.mvp1.whatiread.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mvp1.whatiread.entity.Friend;
+import com.mvp1.whatiread.entity.FriendShip;
 import com.mvp1.whatiread.entity.Shelf;
 import com.mvp1.whatiread.entity.audit.DateAudit;
 import com.mvp1.whatiread.entity.role.Role;
@@ -22,6 +22,7 @@ import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import java.io.Serial;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -39,6 +40,7 @@ import org.hibernate.annotations.NaturalId;
 @NoArgsConstructor
 public class User extends DateAudit {
 
+  @Serial
   private static final long serialVersionUID = 1L;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -77,7 +79,7 @@ public class User extends DateAudit {
   private Set<Shelf> shelves = new HashSet<>();
 
   @OneToMany(mappedBy = "user")
-  private Set<Friend> friends = new HashSet<>();
+  private Set<FriendShip> friends = new HashSet<>();
 
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))

@@ -1,8 +1,9 @@
-package com.mvp1.whatiread.service.Impl;
+package com.mvp1.whatiread.service.impl;
 
 import com.mvp1.whatiread.entity.user.User;
 import com.mvp1.whatiread.repository.UserRepository;
 import com.mvp1.whatiread.security.UserPrincipal;
+import com.mvp1.whatiread.service.CustomUserDetailsService;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,12 +14,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CustomUserDetailsService implements UserDetailsService,
-    com.mvp1.whatiread.service.CustomUserDetailsService {
+public class CustomUserDetailsServiceImpl implements UserDetailsService, CustomUserDetailsService {
 
   private UserRepository userRepository;
 
-  public CustomUserDetailsService(UserRepository userRepository) {
+  public CustomUserDetailsServiceImpl(UserRepository userRepository) {
     this.userRepository = userRepository;
   }
 

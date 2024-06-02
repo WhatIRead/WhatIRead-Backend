@@ -1,4 +1,4 @@
-package com.mvp1.whatiread.service.Impl;
+package com.mvp1.whatiread.service.impl;
 
 import com.mvp1.whatiread.converter.BookConverter;
 import com.mvp1.whatiread.dto.BookDTO;
@@ -25,6 +25,7 @@ public class BookServiceImpl implements BookService {
 
     return null;
   }
+
 //  public void addBookToShelf(long shelfId, Book book) {
 //    Optional<Shelf> shelfOptional = shelfRepository.findByShelfId(shelfId);
 //    if (shelfOptional.isPresent()) {

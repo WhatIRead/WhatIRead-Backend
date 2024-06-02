@@ -1,4 +1,4 @@
-package com.mvp1.whatiread.service.Impl;
+package com.mvp1.whatiread.service.impl;
 
 import com.mvp1.whatiread.entity.role.Role;
 import com.mvp1.whatiread.entity.role.RoleName;
@@ -20,9 +20,9 @@ import com.mvp1.whatiread.repository.RoleRepository;
 import com.mvp1.whatiread.repository.UserRepository;
 import com.mvp1.whatiread.security.UserPrincipal;
 import com.mvp1.whatiread.service.UserService;
+import com.mvp1.whatiread.utils.Constants;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,14 +31,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
 
-  @Autowired
   private UserRepository userRepository;
 
-  @Autowired
   private RoleRepository roleRepository;
 
-  @Autowired
   private PasswordEncoder passwordEncoder;
+
+  public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository,
+      PasswordEncoder passwordEncoder) {
+    this.userRepository = userRepository;
+    this.roleRepository = roleRepository;
+    this.passwordEncoder = passwordEncoder;
+  }
 
   @Override
   public UserSummary getCurrentUser(UserPrincipal currentUser) {
@@ -70,12 +74,12 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public User addUser(User user) {
-    if (userRepository.existsByUsername(user.getUsername())) {
+    if (Boolean.TRUE.equals(userRepository.existsByUsername(user.getUsername()))) {
       ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "Username is already taken");
       throw new BadRequestException(apiResponse);
     }
 
-    if (userRepository.existsByEmail(user.getEmail())) {
+    if (Boolean.TRUE.equals(userRepository.existsByEmail(user.getEmail()))) {
       ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "Email is already taken");
       throw new BadRequestException(apiResponse);
     }
@@ -83,7 +87,7 @@ public class UserServiceImpl implements UserService {
     List<Role> roles = new ArrayList<>();
     roles.add(
         roleRepository.findByName(RoleName.ROLE_USER)
-            .orElseThrow(() -> new AppException("User role not set")));
+            .orElseThrow(() -> new AppException(Constants.USER_ROLE_NOT_SET)));
     user.setRoles(roles);
 
     user.setPassword(passwordEncoder.encode(user.getPassword()));

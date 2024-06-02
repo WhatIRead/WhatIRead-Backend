@@ -11,11 +11,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -47,35 +45,38 @@ public class SecurityConfig {
     this.jwtAuthenticationFilter = jwtAuthenticationFilter;
   }
 
-//  @Bean
-//  public SecurityFilterChain temp(HttpSecurity http) throws Exception{
-//    return http.cors(cors -> cors.disable()).csrf(csrf -> csrf.disable())
-//        .authorizeHttpRequests(auth -> {
-//          auth.requestMatchers("/**").permitAll();
-//        })
-//        .httpBasic(withDefaults())
-//        .build();
-//  }
-
   @Bean
-  public SecurityFilterChain configureUserSecurity(HttpSecurity http) throws Exception {
-    http.cors(cors -> cors.disable())
+  public SecurityFilterChain temp(HttpSecurity http) throws Exception {
+    return http.cors(cors -> cors.disable()).csrf(csrf -> csrf.disable())
         .csrf(csrf -> csrf.ignoringRequestMatchers(
             AntPathRequestMatcher.antMatcher("/h2-console/**")))
-        .exceptionHandling(ex -> ex.authenticationEntryPoint(unauthorizedHandler))
-        .sessionManagement(
-            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> {
-          auth.requestMatchers("/api/users/checkUsernameAvailability",
-                  "/api/users/checkEmailAvailability", "/api/auth/**", "/h2-console/**",
-                  "/swagger-ui/**").permitAll()
-              .anyRequest().authenticated();
+          auth.requestMatchers("/**").permitAll();
         })
         .httpBasic(withDefaults())
-        .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()));
-    http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-    return http.build();
+        .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
+        .build();
   }
+
+//  @Bean
+//  public SecurityFilterChain configureUserSecurity(HttpSecurity http) throws Exception {
+//    http.cors(cors -> cors.disable())
+//        .csrf(csrf -> csrf.ignoringRequestMatchers(
+//            AntPathRequestMatcher.antMatcher("/h2-console/**")))
+//        .exceptionHandling(ex -> ex.authenticationEntryPoint(unauthorizedHandler))
+//        .sessionManagement(
+//            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//        .authorizeHttpRequests(auth -> {
+//          auth.requestMatchers("/api/users/checkUsernameAvailability",
+//                  "/api/users/checkEmailAvailability", "/api/auth/**", "/h2-console/**",
+//                  "/swagger-ui/**").permitAll()
+//              .anyRequest().authenticated();
+//        })
+//        .httpBasic(withDefaults())
+//        .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()));
+//    http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+//    return http.build();
+//  }
 
   @Bean
   public AuthenticationManager authenticationManager(

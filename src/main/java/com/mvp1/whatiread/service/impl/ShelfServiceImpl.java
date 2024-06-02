@@ -1,4 +1,4 @@
-package com.mvp1.whatiread.service.Impl;
+package com.mvp1.whatiread.service.impl;
 
 import com.mvp1.whatiread.entity.Book;
 import com.mvp1.whatiread.entity.Shelf;
@@ -6,6 +6,7 @@ import com.mvp1.whatiread.payload.ShelfRequest;
 import com.mvp1.whatiread.repository.BookRepository;
 import com.mvp1.whatiread.repository.ShelfRepository;
 import com.mvp1.whatiread.service.ShelfService;
+import com.mvp1.whatiread.service.UserService;
 import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -13,14 +14,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class ShelfServiceImpl implements ShelfService {
 
-  private ShelfRepository shelfRepository;
+  private final ShelfRepository shelfRepository;
   private final BookRepository bookRepository;
+  private final UserService userService;
   private ModelMapper modelMapper;
 
   public ShelfServiceImpl(ShelfRepository shelfRepository,
-      BookRepository bookRepository) {
+      BookRepository bookRepository, UserService userService) {
     this.shelfRepository = shelfRepository;
     this.bookRepository = bookRepository;
+    this.userService = userService;
   }
 
   @Override
@@ -31,6 +34,11 @@ public class ShelfServiceImpl implements ShelfService {
   @Override
   public List<Shelf> getAllShelvesForUser(Long userId) {
     return shelfRepository.findByUserId(userId);
+  }
+
+  @Override
+  public Shelf getShelfForUser(Long userId, Long shelfId) {
+    return shelfRepository.findByIdAndUserId(userId, shelfId);
   }
 
   @Override

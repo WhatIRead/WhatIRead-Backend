@@ -11,6 +11,8 @@ public interface ShelfService {
 
   public List<Shelf> getAllShelvesForUser(Long userId);
 
+  public Shelf getShelfForUser(Long userId, Long shelfId);
+
   public void addShelf(ShelfRequest shelf);
 
   public void deleteShelf(long shelfId);

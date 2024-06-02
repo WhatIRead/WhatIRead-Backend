@@ -2,6 +2,10 @@ server:
   # Application running port
   port: 8085
 
+openapi:
+  dev:
+    url: http://localhost:8085
+
 spring:
   h2:
     console:
