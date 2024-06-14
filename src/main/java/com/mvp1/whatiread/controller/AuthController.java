@@ -1,5 +1,8 @@
 package com.mvp1.whatiread.controller;
 
+import static com.mvp1.whatiread.utils.Constants.AUTH_BASE_PATH;
+import static com.mvp1.whatiread.utils.Constants.SIGN_IN_PATH;
+import static com.mvp1.whatiread.utils.Constants.SIGN_UP_PATH;
 import static com.mvp1.whatiread.utils.Constants.USER_ROLE_NOT_SET;
 
 import com.mvp1.whatiread.entity.role.Role;
@@ -26,16 +29,15 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping(AUTH_BASE_PATH)
 public class AuthController {
-
   private AuthenticationManager authenticationManager;
   private UserRepository userRepository;
   private RoleRepository roleRepository;
@@ -52,7 +54,7 @@ public class AuthController {
     this.jwtTokenProvider = jwtTokenProvider;
   }
 
-  @GetMapping("/signin")
+  @PostMapping(SIGN_IN_PATH)
   public ResponseEntity<JwtAuthenticationResponse> authenticateUser(
       @Valid @RequestBody LoginRequest loginRequest) {
     Authentication authentication = authenticationManager.authenticate(
@@ -65,7 +67,7 @@ public class AuthController {
     return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
   }
 
-  @GetMapping("/signup")
+  @PostMapping(SIGN_UP_PATH)
   public ResponseEntity<ApiResponse> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
     if (Boolean.TRUE.equals(userRepository.existsByUsername(signUpRequest.getUsername()))) {
       throw new WhatIReadException(HttpStatus.BAD_REQUEST, "Username is already taken");

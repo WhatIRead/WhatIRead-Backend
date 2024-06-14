@@ -25,4 +25,7 @@ public class WhatIReadException extends RuntimeException {
     this.message = message;
   }
 
+  public HttpStatus getHttpStatus() {
+    return status;
+  }
 }

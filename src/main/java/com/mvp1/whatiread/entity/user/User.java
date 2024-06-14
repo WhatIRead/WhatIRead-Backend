@@ -26,6 +26,7 @@ import java.io.Serial;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

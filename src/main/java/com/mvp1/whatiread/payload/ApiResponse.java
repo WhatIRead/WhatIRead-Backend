@@ -8,11 +8,7 @@ import lombok.Data;
 import org.springframework.http.HttpStatus;
 
 @Data
-@JsonPropertyOrder({
-    "success",
-    "message"
-}
-)
+@JsonPropertyOrder({"success", "message"})
 public class ApiResponse implements Serializable {
 
   @JsonIgnore
@@ -40,5 +36,9 @@ public class ApiResponse implements Serializable {
     this.success = success;
     this.message = message;
     this.status = httpStatus;
+  }
+
+  public boolean isSuccess() {
+    return success;
   }
 }

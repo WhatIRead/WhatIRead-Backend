@@ -5,16 +5,20 @@ import static org.springframework.security.config.Customizer.withDefaults;
 import com.mvp1.whatiread.security.JwtAuthenticationEntryPoint;
 import com.mvp1.whatiread.security.JwtAuthenticationFilter;
 import com.mvp1.whatiread.service.CustomUserDetailsService;
+import java.util.Arrays;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableWebSecurity
@@ -47,14 +51,22 @@ public class SecurityConfig {
 
   @Bean
   public SecurityFilterChain temp(HttpSecurity http) throws Exception {
-    return http.cors(cors -> cors.disable()).csrf(csrf -> csrf.disable())
+    return http.cors(cors ->
+            cors.configurationSource(request -> {
+              CorsConfiguration config = new CorsConfiguration();
+              config.setAllowedOrigins(
+                  Arrays.asList("http://localhost"));
+              config.setAllowedMethods(Arrays.asList("*"));
+              config.setAllowedHeaders(Arrays.asList("*"));
+              return config;
+            })).csrf(AbstractHttpConfigurer::disable)
         .csrf(csrf -> csrf.ignoringRequestMatchers(
             AntPathRequestMatcher.antMatcher("/h2-console/**")))
         .authorizeHttpRequests(auth -> {
           auth.requestMatchers("/**").permitAll();
         })
         .httpBasic(withDefaults())
-        .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
+        .headers(headers -> headers.frameOptions(FrameOptionsConfig::disable))
         .build();
   }
 

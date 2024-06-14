@@ -3,9 +3,13 @@ package com.mvp1.whatiread.payload;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@Builder
+@ToString
 public class SignUpRequest {
 
   @NotBlank

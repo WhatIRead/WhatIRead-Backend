@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.io.Serial;
 import java.io.Serializable;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NaturalId;
@@ -18,6 +19,7 @@ import org.hibernate.annotations.NaturalId;
 @Data
 @NoArgsConstructor
 @Table(name = "roles")
+@AllArgsConstructor
 public class Role implements Serializable {
 
   @Serial
