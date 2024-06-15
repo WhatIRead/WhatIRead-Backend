@@ -2,15 +2,12 @@ package com.mvp1.whatiread.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mvp1.whatiread.entity.user.User;
-import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

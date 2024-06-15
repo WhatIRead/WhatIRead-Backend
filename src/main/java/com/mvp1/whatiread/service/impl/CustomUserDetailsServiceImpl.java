@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomUserDetailsServiceImpl implements UserDetailsService, CustomUserDetailsService {
 
-  private UserRepository userRepository;
+  private final UserRepository userRepository;
 
   public CustomUserDetailsServiceImpl(UserRepository userRepository) {
     this.userRepository = userRepository;
@@ -32,7 +32,9 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService, CustomU
 
   @Override
   public UserDetails loadUserById(Long id) {
-    return null;
+    User user = userRepository.findById(id).orElseThrow(
+        () -> new UsernameNotFoundException(String.format("User not found with id: %s", id)));
+    return UserPrincipal.create(user);
   }
 
   private List<GrantedAuthority> getAuthorities(List<String> roles) {

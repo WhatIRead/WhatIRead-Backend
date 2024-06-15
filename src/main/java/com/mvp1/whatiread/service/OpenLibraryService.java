@@ -5,5 +5,5 @@ import java.util.List;
 
 public interface OpenLibraryService {
 
-  public List<BookDetails> searchBooksByTitle(String title);
+  List<BookDetails> searchBooksByTitle(String title);
 }

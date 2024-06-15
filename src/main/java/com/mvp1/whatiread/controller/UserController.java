@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "User Service", description = "This service provides ability to handle user related information.")
 public class UserController {
 
-  private UserService userService;
+  private final UserService userService;
 
   public UserController(UserService userService) {
     this.userService = userService;
@@ -77,7 +78,7 @@ public class UserController {
     return new ResponseEntity<>(newUser, HttpStatus.CREATED);
   }
 
-  @GetMapping("/{username}")
+  @PutMapping("/{username}")
   @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
   @Operation(description = "This api updates given user details. Both user or admin can perform this operation.")
   public ResponseEntity<User> updateUser(@Valid @RequestBody User newUser,
@@ -96,7 +97,7 @@ public class UserController {
     return new ResponseEntity<>(apiResponse, HttpStatus.OK);
   }
 
-  @GetMapping("/{username}/giveAdmin")
+  @PutMapping("/{username}/giveAdmin")
   @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<ApiResponse> giveAdmin(@PathVariable(name = "username") String username) {
     ApiResponse apiResponse = userService.giveAdmin(username);
@@ -104,7 +105,7 @@ public class UserController {
     return new ResponseEntity<>(apiResponse, HttpStatus.OK);
   }
 
-  @GetMapping("/{username}/takeAdmin")
+  @PutMapping("/{username}/takeAdmin")
   @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<ApiResponse> takeAdmin(@PathVariable(name = "username") String username) {
     ApiResponse apiResponse = userService.removeAdmin(username);
@@ -112,7 +113,7 @@ public class UserController {
     return new ResponseEntity<>(apiResponse, HttpStatus.OK);
   }
 
-  @GetMapping("/setOrUpdateInfo")
+  @PutMapping("/setOrUpdateInfo")
   @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
   public ResponseEntity<UserProfile> setAddress(@CurrentUser UserPrincipal currentUser,
       @Valid @RequestBody InfoRequest infoRequest) {

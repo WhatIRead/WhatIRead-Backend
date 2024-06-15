@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface BookService {
 
-  public List<BookDTO> getBooksWithTitle(String title);
+  List<BookDTO> getBooksWithTitle(String title);
 }

@@ -1,21 +1,19 @@
 package com.mvp1.whatiread.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import com.github.javafaker.Faker;
 import com.mvp1.whatiread.entity.Book;
 import com.mvp1.whatiread.entity.Shelf;
-import com.mvp1.whatiread.entity.user.User;
 import com.mvp1.whatiread.exception.AccessDeniedException;
 import com.mvp1.whatiread.payload.UserSummary;
 import com.mvp1.whatiread.repository.ShelfRepository;
 import com.mvp1.whatiread.security.UserPrincipal;
 import com.mvp1.whatiread.service.ShelfService;
 import com.mvp1.whatiread.service.UserService;
-import jakarta.inject.Inject;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

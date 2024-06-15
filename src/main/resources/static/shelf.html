@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Search and Shelf</title>
+  <link rel="stylesheet" href="shelf-style.css">
+</head>
+
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>Book Search and Shelf</h1>
+  </div>
+  <div class="search">
+    <input type="text" id="searchInput" placeholder="Search for a book title"
+           onkeypress="handleKeyPress(event)">
+    <button onclick="searchBooks()">Search</button>
+  </div>
+  <div class="search-results-container">
+    <div class="search-results" id="searchResults"></div>
+    <div class="pagination" id="pagination"></div>
+  </div>
+  <div class="bookshelf">
+    <input type="text" id="shelfName" value="My Bookshelf" class="editable-shelf-name"/>
+    <div class="shelf" id="shelf"></div>
+    <button onclick="createShelf()" class="create-shelf-btn">Create Shelf</button>
+  </div>
+</div>
+
+<script>
+  let currentPage = 1;
+  let totalPages = 1;
+
+  function searchBooks(page = 1) {
+    const searchInput = document.getElementById('searchInput').value;
+    fetch(`http://openlibrary.org/search.json?title=${searchInput}&page=${page}`)
+    .then(response => response.json())
+    .then(data => {
+      currentPage = page;
+      totalPages = Math.ceil(data.numFound / 10);
+      displayBooks(data.docs);
+      setupPagination();
+    })
+    .catch(error => {
+      console.error('Error searching books:', error);
+    });
+  }
+
+  function displayBooks(books) {
+    const searchResults = document.getElementById('searchResults');
+    searchResults.innerHTML = '';
+
+    books.forEach(book => {
+      const title = book.title;
+      const author = book.author_name ? book.author_name.join(', ') : 'Unknown';
+      const cover = book.cover_i ? `http://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
+          : 'https://via.placeholder.com/150x200?text=No+Cover';
+      const rating = book.ratings_average ? book.ratings_average : 'N/A'; // Placeholder for ratings
+
+      const bookElement = document.createElement('div');
+      bookElement.classList.add('book');
+      bookElement.innerHTML = `
+      <img src="${cover}" alt="Book cover">
+      <div class="book-info">
+        <h3>${title}</h3>
+        <p>Author: ${author}</p>
+        <p>Rating: ${rating}</p>
+        <button onclick="toggleBook('${title}', '${author}', '${cover}')">Add to Bookshelf</button>
+      </div>
+    `;
+      searchResults.appendChild(bookElement);
+    });
+  }
+
+  function setupPagination() {
+    const pagination = document.getElementById('pagination');
+    pagination.innerHTML = '';
+
+    if (currentPage > 1) {
+      const prevButton = document.createElement('button');
+      prevButton.textContent = 'Previous';
+      prevButton.onclick = () => searchBooks(currentPage - 1);
+      pagination.appendChild(prevButton);
+    }
+
+    for (let i = 1; i <= totalPages; i++) {
+      const pageButton = document.createElement('button');
+      pageButton.textContent = i;
+      pageButton.onclick = () => searchBooks(i);
+      if (i === currentPage) {
+        pageButton.classList.add('active');
+      }
+      pagination.appendChild(pageButton);
+    }
+
+    if (currentPage < totalPages) {
+      const nextButton = document.createElement('button');
+      nextButton.textContent = 'Next';
+      nextButton.onclick = () => searchBooks(currentPage + 1);
+      pagination.appendChild(nextButton);
+    }
+  }
+
+  function toggleBook(title, author, cover) {
+    const shelf = document.getElementById('shelf');
+    const existingBook = Array.from(shelf.children).find(
+        book => book.querySelector('h3').textContent === title
+    );
+
+    if (existingBook) {
+      existingBook.remove();
+      updateButton(title, false);
+    } else {
+      const bookElement = document.createElement('div');
+      bookElement.classList.add('shelf-book');
+      bookElement.innerHTML = `
+      <div class="remove-btn" onclick="removeFromBookshelf(this)">❌</div>
+      <img src="${cover}" alt="Book cover">
+      <div class="info">
+        <h3>${title}</h3>
+        <p>Author: ${author}</p>
+      </div>
+    `;
+      shelf.appendChild(bookElement);
+      updateButton(title, true);
+    }
+  }
+
+  function updateButton(title, added) {
+    const bookButtons = Array.from(document.querySelectorAll('.search-results .book button'));
+    const button = bookButtons.find(
+        btn => btn.parentElement.querySelector('h3').textContent === title
+    );
+
+    if (added) {
+      button.textContent = 'Remove from Bookshelf';
+      button.classList.add('remove');
+    } else {
+      button.textContent = 'Add to Bookshelf';
+      button.classList.remove('remove');
+    }
+  }
+
+  function removeFromBookshelf(button) {
+    const bookElement = button.parentElement;
+    const title = bookElement.querySelector('h3').textContent;
+    bookElement.remove();
+    updateButton(title, false);
+  }
+
+  function createShelf() {
+    const shelfName = document.getElementById('shelfName').value;
+    const shelfBooks = Array.from(document.getElementById('shelf').children).map(book => {
+      const title = book.querySelector('h3').textContent;
+      const author = book.querySelector('p').textContent.replace('Author: ', '');
+      return {title, author};
+    });
+
+    const shelfData = {
+      shelfName,
+      books: shelfBooks
+    };
+
+    // Call backend API to store shelf data
+    fetch('http://localhost:8085/api/shelf', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(shelfData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      alert('Shelf created successfully!');
+    })
+    .catch(error => {
+      console.error('Error creating shelf:', error);
+    });
+  }
+
+  function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+      searchBooks();
+    }
+  }
+</script>
+
+</body>
+
+</html>

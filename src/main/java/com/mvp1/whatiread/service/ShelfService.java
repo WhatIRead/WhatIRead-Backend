@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface ShelfService {
 
-  public List<Book> getAllBookFromShelf(long shelfId);
+  List<Book> getAllBookFromShelf(long shelfId);
 
-  public List<Shelf> getAllShelvesForUser(Long userId);
+  List<Shelf> getAllShelvesForUser(Long userId);
 
-  public Shelf getShelfForUser(Long userId, Long shelfId);
+  Shelf getShelfForUser(Long userId, Long shelfId);
 
-  public void addShelf(ShelfRequest shelf);
+  void addShelf(ShelfRequest shelf);
 
-  public void deleteShelf(long shelfId);
+  void deleteShelf(long shelfId);
 }

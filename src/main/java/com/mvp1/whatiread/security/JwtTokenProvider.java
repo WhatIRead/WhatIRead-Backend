@@ -1,18 +1,22 @@
 package com.mvp1.whatiread.security;
 
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
+import java.security.Key;
 import java.util.Date;
+import javax.crypto.SecretKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 @Component
 public class JwtTokenProvider {
@@ -25,43 +29,51 @@ public class JwtTokenProvider {
   @Value(value = "${app.jwtExpirationInMs}")
   private int jwtExpirationInMs;
 
-  public String generateToken(Authentication authentication) {
-    UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+  public String getJwtFromHeader(HttpServletRequest request) {
+    String bearerToken = request.getHeader("Authorization");
+    if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+      return bearerToken.substring(7);
+    }
+    return null;
+  }
 
+  public String generateTokenFromUsername(UserDetails userDetails) {
     Date now = new Date();
     Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
 
     return Jwts.builder()
-        .setSubject(Long.toString(userPrincipal.getId()))
-        .setIssuedAt(new Date())
-        .setExpiration(expiryDate)
-        .signWith(SignatureAlgorithm.HS512, jwtSecret)
+        .subject(userDetails.getUsername())
+        .issuedAt(now)
+        .expiration(expiryDate)
+        .signWith(key())
         .compact();
   }
 
-  public Long getUserIdFromJWT(String token) {
-    Claims claims = Jwts.parser()
-        .setSigningKey(jwtSecret)
-        .parseClaimsJws(token)
-        .getBody();
+  public String getUserNameFromToken(String authToken) {
+    return Jwts.parser().verifyWith((SecretKey) key())
+        .build().parseSignedClaims(authToken).getPayload().getSubject();
+  }
 
-    return Long.valueOf(claims.getSubject());
+  private Key key() {
+    return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
   }
 
   public boolean validateToken(String authToken) {
     try {
-      Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+      Jwts.parser().verifyWith((SecretKey) key())
+          .build().parseSignedClaims(authToken);
+      LOGGER.info("Validated successfully");
       return true;
     } catch (SignatureException ex) {
-      LOGGER.error("Invalid JWT signature");
+      LOGGER.error("Invalid JWT signature: {}", ex.getMessage());
     } catch (MalformedJwtException ex) {
-      LOGGER.error("Invalid JWT token");
+      LOGGER.error("JWT token is malformed: {}", ex.getMessage());
     } catch (ExpiredJwtException ex) {
-      LOGGER.error("Expired JWT token");
+      LOGGER.error("JWT token is expired: {}", ex.getMessage());
     } catch (UnsupportedJwtException ex) {
-      LOGGER.error("Unsupported JWT token");
+      LOGGER.error("JWT token is unsupported: {}", ex.getMessage());
     } catch (IllegalArgumentException ex) {
-      LOGGER.error("JWT claims string is empty");
+      LOGGER.error("JWT claims string is empty: {}", ex.getCause());
     }
     return false;
   }

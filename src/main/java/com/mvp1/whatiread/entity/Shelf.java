@@ -1,7 +1,6 @@
 package com.mvp1.whatiread.entity;
 
 import com.mvp1.whatiread.entity.user.User;
-import com.nimbusds.jose.shaded.gson.annotations.SerializedName;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

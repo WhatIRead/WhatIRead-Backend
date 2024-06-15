@@ -1,6 +1,9 @@
 package com.mvp1.whatiread.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -8,6 +11,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.github.javafaker.Faker;
+import com.mvp1.whatiread.entity.role.Role;
 import com.mvp1.whatiread.entity.role.RoleName;
 import com.mvp1.whatiread.exception.WhatIReadException;
 import com.mvp1.whatiread.payload.ApiResponse;
@@ -17,8 +21,6 @@ import com.mvp1.whatiread.payload.SignUpRequest;
 import com.mvp1.whatiread.repository.RoleRepository;
 import com.mvp1.whatiread.repository.UserRepository;
 import com.mvp1.whatiread.security.JwtTokenProvider;
-import jakarta.inject.Inject;
-import com.mvp1.whatiread.entity.role.Role;
 import java.util.Objects;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +30,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,6 +37,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 class AuthControllerTest {
@@ -71,7 +73,8 @@ class AuthControllerTest {
     loginRequest.setPassword(faker.internet().password());
     when(authenticationManager.authenticate(
         any(UsernamePasswordAuthenticationToken.class))).thenReturn(authentication);
-    when(jwtTokenProvider.generateToken(any(Authentication.class))).thenReturn("fake-jwt-token");
+    when(jwtTokenProvider.generateTokenFromUsername(any(UserDetails.class))).thenReturn(
+        "fake-jwt-token");
 
     SecurityContext securityContext = mock(SecurityContext.class);
     SecurityContextHolder.setContext(securityContext);
@@ -84,11 +87,11 @@ class AuthControllerTest {
     // Assert
     assertNotNull(response);
     assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals("fake-jwt-token", response.getBody().getAccessToken());
+    assertEquals("fake-jwt-token", response.getBody().getJwtToken());
 
     verify(authenticationManager, times(1)).authenticate(
         any(UsernamePasswordAuthenticationToken.class));
-    verify(jwtTokenProvider, times(1)).generateToken(any(Authentication.class));
+    verify(jwtTokenProvider, times(1)).generateTokenFromUsername(any(UserDetails.class));
     verify(securityContext, times(1)).setAuthentication(authentication);
 
   }
@@ -102,7 +105,8 @@ class AuthControllerTest {
             .emailAddress()).password(faker.internet().password()).build();
     when(userRepository.existsByUsername(userName)).thenReturn(false);
     when(roleRepository.count()).thenReturn(1L);
-    when(roleRepository.findByName(RoleName.ROLE_USER)).thenReturn(Optional.of(new Role(1L, RoleName.ROLE_USER)));
+    when(roleRepository.findByName(RoleName.ROLE_USER)).thenReturn(
+        Optional.of(new Role(1L, RoleName.ROLE_USER)));
     when(roleRepository.findByName(RoleName.ROLE_ADMIN)).thenReturn(
         Optional.of(new Role(2L, RoleName.ROLE_ADMIN)));
 

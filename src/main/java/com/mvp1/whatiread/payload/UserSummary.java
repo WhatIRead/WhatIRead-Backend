@@ -9,6 +9,7 @@ import net.minidev.json.annotate.JsonIgnore;
 @AllArgsConstructor
 @Builder
 public class UserSummary {
+
   @JsonIgnore
   private Long id;
   private String username;

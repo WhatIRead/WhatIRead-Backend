@@ -31,11 +31,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
 
-  private UserRepository userRepository;
+  private final UserRepository userRepository;
 
-  private RoleRepository roleRepository;
+  private final RoleRepository roleRepository;
 
-  private PasswordEncoder passwordEncoder;
+  private final PasswordEncoder passwordEncoder;
 
   public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository,
       PasswordEncoder passwordEncoder) {

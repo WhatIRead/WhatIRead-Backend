@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class BookServiceImpl implements BookService {
 
-  private BookRepository bookRepository;
-  private BookConverter bookConverter;
+  private final BookRepository bookRepository;
+  private final BookConverter bookConverter;
 
   @Autowired
   public BookServiceImpl(BookRepository bookRepository, BookConverter bookConverter) {

@@ -78,12 +78,22 @@
       <groupId>org.springframework.boot</groupId>
       <scope>test</scope>
     </dependency>
-
-    <!-- JWT Dependency -->
     <dependency>
-      <artifactId>jjwt</artifactId>
       <groupId>io.jsonwebtoken</groupId>
-      <version>0.9.1</version>
+      <artifactId>jjwt-api</artifactId>
+      <version>0.12.5</version>
+    </dependency>
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt-impl</artifactId>
+      <version>0.12.5</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt-jackson</artifactId> <!-- or jjwt-gson if Gson is preferred -->
+      <version>0.12.5</version>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <artifactId>spring-security-jwt</artifactId>
@@ -105,6 +115,10 @@
       <artifactId>javafaker</artifactId>
       <version>1.0.2</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
   </dependencies>
 

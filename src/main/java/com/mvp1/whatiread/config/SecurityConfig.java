@@ -5,38 +5,32 @@ import static org.springframework.security.config.Customizer.withDefaults;
 import com.mvp1.whatiread.security.JwtAuthenticationEntryPoint;
 import com.mvp1.whatiread.security.JwtAuthenticationFilter;
 import com.mvp1.whatiread.service.CustomUserDetailsService;
-import java.util.Arrays;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(
+    securedEnabled = true,
+    jsr250Enabled = true,
+    prePostEnabled = true)
 public class SecurityConfig {
 
-  private static final String[] AUTH_WHITELIST = {
-      "/v2/api-docs",
-      "/swagger-resources",
-      "/swagger-resources/**",
-      "/configuration/ui",
-      "/configuration/security",
-      "/swagger-ui.html",
-      "/webjars/**",
-      // -- Swagger UI v3 (OpenAPI)
-      "/v3/api-docs/**",
-      "/swagger-ui/**",
-      "/h2-console/**"
-  };
   private final CustomUserDetailsService customUserDetailsService;
   private final JwtAuthenticationEntryPoint unauthorizedHandler;
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -50,50 +44,31 @@ public class SecurityConfig {
   }
 
   @Bean
-  public SecurityFilterChain temp(HttpSecurity http) throws Exception {
-    return http.cors(cors ->
-            cors.configurationSource(request -> {
-              CorsConfiguration config = new CorsConfiguration();
-              config.setAllowedOrigins(
-                  Arrays.asList("http://localhost"));
-              config.setAllowedMethods(Arrays.asList("*"));
-              config.setAllowedHeaders(Arrays.asList("*"));
-              return config;
-            })).csrf(AbstractHttpConfigurer::disable)
-        .csrf(csrf -> csrf.ignoringRequestMatchers(
-            AntPathRequestMatcher.antMatcher("/h2-console/**")))
-        .authorizeHttpRequests(auth -> {
-          auth.requestMatchers("/**").permitAll();
+  @Order(1)
+  public SecurityFilterChain configureUserSecurity(HttpSecurity http) throws Exception {
+    http.authorizeHttpRequests(auth -> {
+          auth.requestMatchers("/api/users/checkUsernameAvailability",
+                  "/api/users/checkEmailAvailability",
+                  "/api/auth/**",
+                  "/h2-console/**",
+                  "/swagger-ui/**").permitAll()
+              .anyRequest().authenticated();
         })
-        .httpBasic(withDefaults())
-        .headers(headers -> headers.frameOptions(FrameOptionsConfig::disable))
-        .build();
+        .sessionManagement(
+            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .exceptionHandling(ex -> ex.authenticationEntryPoint(unauthorizedHandler))
+        .headers(headers ->
+            headers.frameOptions(FrameOptionsConfig::sameOrigin))
+        .csrf(AbstractHttpConfigurer::disable)
+        .httpBasic(withDefaults());
+    http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+    return http.build();
   }
-
-//  @Bean
-//  public SecurityFilterChain configureUserSecurity(HttpSecurity http) throws Exception {
-//    http.cors(cors -> cors.disable())
-//        .csrf(csrf -> csrf.ignoringRequestMatchers(
-//            AntPathRequestMatcher.antMatcher("/h2-console/**")))
-//        .exceptionHandling(ex -> ex.authenticationEntryPoint(unauthorizedHandler))
-//        .sessionManagement(
-//            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//        .authorizeHttpRequests(auth -> {
-//          auth.requestMatchers("/api/users/checkUsernameAvailability",
-//                  "/api/users/checkEmailAvailability", "/api/auth/**", "/h2-console/**",
-//                  "/swagger-ui/**").permitAll()
-//              .anyRequest().authenticated();
-//        })
-//        .httpBasic(withDefaults())
-//        .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()));
-//    http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-//    return http.build();
-//  }
 
   @Bean
   public AuthenticationManager authenticationManager(
-      AuthenticationConfiguration authenticationConfiguration) throws Exception {
-    return authenticationConfiguration.getAuthenticationManager();
+      AuthenticationConfiguration authConfig) throws Exception {
+    return authConfig.getAuthenticationManager();
   }
 
   @Bean
@@ -101,4 +76,19 @@ public class SecurityConfig {
     return new BCryptPasswordEncoder();
   }
 
+  //  Allow CORS configuration
+  @Bean
+  public WebMvcConfigurer corsConfigurer() {
+    return new WebMvcConfigurer() {
+      @Override
+      public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+            .allowedOrigins("*");
+//            .allowedMethods("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS", "HEAD")
+//            .maxAge(3600)
+//            .allowedHeaders("Requestor-Type", "Authorization")
+//            .exposedHeaders("X-Get-Header");;
+      }
+    };
+  }
 }
