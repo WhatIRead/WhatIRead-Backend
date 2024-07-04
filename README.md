@@ -42,4 +42,4 @@ The app defines following CRUD APIs.
 
 ## End points
 
-## Swagger UI End-point : [swagger](http://localhost/8085/swagger-ui/index.html)
+## Swagger UI End-point : [swagger](http://localhost:8085/swagger-ui/index.html)
