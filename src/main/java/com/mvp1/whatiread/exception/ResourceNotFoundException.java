@@ -9,12 +9,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ResourceNotFoundException extends RuntimeException {
 
   private static final long serialVersionUID = 1L;
-
-  private transient ApiResponse apiResponse;
-
   private final String resourceName;
   private final String fieldName;
   private final Object fieldValue;
+  private transient ApiResponse apiResponse;
 
   public ResourceNotFoundException(String resourceName, String fieldName, Object fieldValue) {
     super();

@@ -8,8 +8,11 @@ spring:
 springdoc:
   api-docs:
     enabled: true
+  path: /v3/api-docs
   # Enable/Disable swagger-ui
+  # swagger-ui custom path
   swagger-ui:
+    path: /swagger-ui.html
     enabled: true
   show-actuator: true
 

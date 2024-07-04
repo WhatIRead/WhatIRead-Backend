@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 30px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      border-radius: 12px;
+      width: 80%;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    .profile-info {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .profile-info p {
+      margin: 10px 0;
+    }
+
+    .shelves {
+      text-align: left;
+    }
+
+    .shelves h3 {
+      margin-bottom: 10px;
+    }
+
+    .shelves ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .shelves ul li {
+      background-color: #ff6f61;
+      color: white;
+      padding: 10px;
+      margin-bottom: 5px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+
+<body>
+<div class="container">
+  <h2>User Profile</h2>
+  <div class="profile-info">
+    <p><strong>Username:</strong> <span id="username"></span></p>
+    <p><strong>First Name:</strong> <span id="firstName"></span></p>
+    <p><strong>Last Name:</strong> <span id="lastName"></span></p>
+  </div>
+  <div class="shelves">
+    <h3>Book Shelves</h3>
+    <ul id="shelvesList"></ul>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    fetch('http://localhost:8085/api/users/me', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}` // Assuming you store the JWT token in localStorage
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById('username').innerText = data.username;
+      document.getElementById('firstName').innerText = data.firstName;
+      document.getElementById('lastName').innerText = data.lastName;
+
+      const shelvesList = document.getElementById('shelvesList');
+      data.shelves.forEach(shelf => {
+        const listItem = document.createElement('li');
+        listItem.innerText = shelf;
+        shelvesList.appendChild(listItem);
+      });
+    })
+    .catch(error => {
+      console.error('Error fetching user profile:', error);
+    });
+  });
+</script>
+</body>
+
+</html>

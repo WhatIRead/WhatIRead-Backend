@@ -36,6 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     try {
       LOGGER.info("JWTAuthenticationFiler called for URI: {}", request.getRequestURI());
       String jwt = tokenProvider.getJwtFromHeader(request);
+      LOGGER.info("JWT token is : {}", jwt);
       if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
         String userName = tokenProvider.getUserNameFromToken(jwt);
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(userName);

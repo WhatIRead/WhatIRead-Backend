@@ -277,8 +277,6 @@
       if (!response.ok) {
         throw new Error('Failed to sign in');
       }
-      // Optionally handle successful sign-in response
-      alert('Signed in successfully');
       // Reset form fields
       document.getElementById('firstName').value = "";
       document.getElementById('lastName').value = "";
@@ -316,11 +314,15 @@
       if (!response.ok) {
         throw new Error('Failed to sign in');
       }
+      return response.json(); // Get the token from response
+    })
+    .then(data => {
       // Optionally handle successful sign-in response
       alert('Signed in successfully');
-      // Reset form fields
-      document.getElementById('loginUsername').value = "";
-      document.getElementById('loginPassword').value = "";
+      // Store the token in local storage
+      localStorage.setItem('token', data.jwtToken);
+      // Redirect to profile page
+      window.location.href = 'profile.html';
     })
     .catch(error => {
       console.error('Error signing in:', error);

@@ -7,5 +7,8 @@ import lombok.Data;
 public class ShelfRequest {
 
   private int id;
+  private String name;
+  private String description;
+  private Boolean isPublic;
   private List<BookDTO> books;
 }

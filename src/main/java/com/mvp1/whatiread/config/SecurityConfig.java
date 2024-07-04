@@ -7,7 +7,6 @@ import com.mvp1.whatiread.security.JwtAuthenticationFilter;
 import com.mvp1.whatiread.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -44,21 +43,24 @@ public class SecurityConfig {
   }
 
   @Bean
-  @Order(1)
   public SecurityFilterChain configureUserSecurity(HttpSecurity http) throws Exception {
     http.authorizeHttpRequests(auth -> {
           auth.requestMatchers("/api/users/checkUsernameAvailability",
                   "/api/users/checkEmailAvailability",
                   "/api/auth/**",
                   "/h2-console/**",
-                  "/swagger-ui/**").permitAll()
+                  "/swagger-ui/**",
+                  "/swagger-ui.html",
+                  "/v3/api-docs/**",
+                  "/app/**",
+                  "/error").permitAll()
               .anyRequest().authenticated();
         })
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .exceptionHandling(ex -> ex.authenticationEntryPoint(unauthorizedHandler))
         .headers(headers ->
-            headers.frameOptions(FrameOptionsConfig::sameOrigin))
+            headers.frameOptions(FrameOptionsConfig::disable))
         .csrf(AbstractHttpConfigurer::disable)
         .httpBasic(withDefaults());
     http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -84,10 +86,6 @@ public class SecurityConfig {
       public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
             .allowedOrigins("*");
-//            .allowedMethods("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS", "HEAD")
-//            .maxAge(3600)
-//            .allowedHeaders("Requestor-Type", "Authorization")
-//            .exposedHeaders("X-Get-Header");;
       }
     };
   }
