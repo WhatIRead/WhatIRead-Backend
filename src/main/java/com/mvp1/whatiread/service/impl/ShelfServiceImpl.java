@@ -2,7 +2,7 @@ package com.mvp1.whatiread.service.impl;
 
 import com.mvp1.whatiread.entity.Book;
 import com.mvp1.whatiread.entity.Shelf;
-import com.mvp1.whatiread.payload.ShelfRequest;
+import com.mvp1.whatiread.dto.ShelfRequest;
 import com.mvp1.whatiread.repository.BookRepository;
 import com.mvp1.whatiread.repository.ShelfRepository;
 import com.mvp1.whatiread.service.ShelfService;
@@ -24,6 +24,7 @@ public class ShelfServiceImpl implements ShelfService {
     this.shelfRepository = shelfRepository;
     this.bookRepository = bookRepository;
     this.userService = userService;
+    this.modelMapper = new ModelMapper();
   }
 
   @Override
@@ -42,9 +43,8 @@ public class ShelfServiceImpl implements ShelfService {
   }
 
   @Override
-  public void addShelf(ShelfRequest shelfRequest) {
-    Shelf shelf = new Shelf();
-    modelMapper.map(shelfRequest, shelf);
+  public void addShelf(Long userId, ShelfRequest shelfRequest) {
+    Shelf shelf = modelMapper.map(shelfRequest, Shelf.class);
     shelfRepository.save(shelf);
   }
 

@@ -1,12 +1,10 @@
-package com.mvp1.whatiread.payload;
+package com.mvp1.whatiread.dto;
 
 import java.util.List;
 import lombok.Data;
 
 @Data
 public class ShelfRequest {
-
-  private int id;
   private String name;
   private String description;
   private Boolean isPublic;

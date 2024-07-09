@@ -1,4 +1,4 @@
-package com.mvp1.whatiread.payload;
+package com.mvp1.whatiread.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

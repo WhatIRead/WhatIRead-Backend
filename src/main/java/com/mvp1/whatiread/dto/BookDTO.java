@@ -20,4 +20,3 @@ public class BookDTO {
   private String author;
   private String tagLine;
 }
-

@@ -1,4 +1,4 @@
-package com.mvp1.whatiread.payload;
+package com.mvp1.whatiread.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

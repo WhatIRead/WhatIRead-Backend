@@ -1,4 +1,4 @@
-package com.mvp1.whatiread.payload;
+package com.mvp1.whatiread.dto;
 
 import com.mvp1.whatiread.entity.user.Address;
 import com.mvp1.whatiread.entity.user.Company;

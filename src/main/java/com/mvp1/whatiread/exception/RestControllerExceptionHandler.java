@@ -1,7 +1,7 @@
 package com.mvp1.whatiread.exception;
 
 import com.mvp1.whatiread.payload.ApiResponse;
-import com.mvp1.whatiread.payload.ExceptionResponse;
+import com.mvp1.whatiread.dto.ExceptionResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

@@ -2,10 +2,10 @@ package com.mvp1.whatiread.controller;
 
 import com.mvp1.whatiread.entity.user.User;
 import com.mvp1.whatiread.payload.ApiResponse;
-import com.mvp1.whatiread.payload.InfoRequest;
-import com.mvp1.whatiread.payload.UserIdentityAvailability;
-import com.mvp1.whatiread.payload.UserProfile;
-import com.mvp1.whatiread.payload.UserSummary;
+import com.mvp1.whatiread.dto.InfoRequest;
+import com.mvp1.whatiread.dto.UserIdentityAvailability;
+import com.mvp1.whatiread.dto.UserProfile;
+import com.mvp1.whatiread.dto.UserSummary;
 import com.mvp1.whatiread.security.CurrentUser;
 import com.mvp1.whatiread.security.UserPrincipal;
 import com.mvp1.whatiread.service.UserService;
