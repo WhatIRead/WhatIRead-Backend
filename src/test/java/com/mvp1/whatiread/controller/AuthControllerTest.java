@@ -11,13 +11,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.github.javafaker.Faker;
-import com.mvp1.whatiread.entity.role.Role;
-import com.mvp1.whatiread.entity.role.RoleName;
-import com.mvp1.whatiread.exception.WhatIReadException;
-import com.mvp1.whatiread.payload.ApiResponse;
+import com.mvp1.whatiread.dto.ApiResponse;
 import com.mvp1.whatiread.dto.JwtAuthenticationResponse;
 import com.mvp1.whatiread.dto.LoginRequest;
 import com.mvp1.whatiread.dto.SignUpRequest;
+import com.mvp1.whatiread.entity.role.Role;
+import com.mvp1.whatiread.entity.role.RoleName;
+import com.mvp1.whatiread.exception.WhatIReadException;
 import com.mvp1.whatiread.repository.RoleRepository;
 import com.mvp1.whatiread.repository.UserRepository;
 import com.mvp1.whatiread.security.JwtTokenProvider;

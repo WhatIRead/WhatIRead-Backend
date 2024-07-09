@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Login & Registration Page</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
@@ -127,18 +127,18 @@
     <h2>Login</h2>
     <div class="form-group">
       <label for="loginUsername">Username or Email</label>
-      <input type="text" id="loginUsername" name="loginUsername" required>
+      <input id="loginUsername" name="loginUsername" required type="text">
     </div>
     <div class="form-group">
       <label for="loginPassword">Password</label>
       <div style="position: relative;">
-        <input type="password" id="loginPassword" name="loginPassword" required
-               style="padding-right: 40px;">
+        <input id="loginPassword" name="loginPassword" required style="padding-right: 40px;"
+               type="password">
         <span class="toggle-password" onclick="togglePasswordVisibility('loginPassword')"
               style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                 class="bi bi-eye"
-                 viewBox="0 0 16 16">
+            <svg class="bi bi-eye" fill="currentColor" height="20" viewBox="0 0 16 16"
+                 width="20"
+                 xmlns="http://www.w3.org/2000/svg">
               <path
                   d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043A13.133 13.133 0 0 1 8 3.5c2.042 0 3.904.784 5.167 2.043A13.133 13.133 0 0 1 14.828 8a13.133 13.133 0 0 1-1.66 2.043A13.133 13.133 0 0 1 8 12.5c-2.042 0-3.904-.784-5.167-2.043A13.133 13.133 0 0 1 1.172 8z"/>
               <path d="M8 5a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/>
@@ -162,26 +162,26 @@
     <h2>Sign Up</h2>
     <div class="form-group">
       <label for="firstName">First Name</label>
-      <input type="text" id="firstName" name="firstName" required>
+      <input id="firstName" name="firstName" required type="text">
     </div>
     <div class="form-group">
       <label for="lastName">Last Name</label>
-      <input type="text" id="lastName" name="lastName" required>
+      <input id="lastName" name="lastName" required type="text">
     </div>
     <div class="form-group">
       <label for="username">Username</label>
-      <input type="text" id="username" name="username" required>
+      <input id="username" name="username" required type="text">
     </div>
     <div class="form-group">
       <label for="email">Email</label>
-      <input type="email" id="email" name="email" required>
-      <span id="emailError" class="error-message"></span>
+      <input id="email" name="email" required type="email">
+      <span class="error-message" id="emailError"></span>
     </div>
     <div class="form-group">
       <label for="password">Password</label>
-      <input type="password" id="password" name="password" required>
+      <input id="password" name="password" required type="password">
       <span class="toggle-password" onclick="togglePasswordVisibility('password')">👁️</span>
-      <span id="passwordError" class="error-message"></span>
+      <span class="error-message" id="passwordError"></span>
     </div>
     <div class="form-group">
       <button onclick="register()">Sign Up</button>
@@ -195,7 +195,7 @@
     <h2>Reset Password</h2>
     <div class="form-group">
       <label for="resetEmail">Email</label>
-      <input type="email" id="resetEmail" name="resetEmail" required>
+      <input id="resetEmail" name="resetEmail" required type="email">
     </div>
     <div class="form-group">
       <button onclick="resetPassword()">Reset Password</button>

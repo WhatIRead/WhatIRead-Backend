@@ -1,7 +1,9 @@
 package com.mvp1.whatiread.entity;
 
 import com.mvp1.whatiread.entity.user.User;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -9,7 +11,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
@@ -34,8 +36,9 @@ public class Shelf implements Serializable {
   private String name;
   private String description;
   private Boolean isPublic;
-  private Date createdAt;
-  @ManyToMany(mappedBy = "shelves")
+  private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
+  @ManyToMany(mappedBy = "shelves", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private Set<Book> books = new HashSet<>();
   @ManyToOne
   private User user;

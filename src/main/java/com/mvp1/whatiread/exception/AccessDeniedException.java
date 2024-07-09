@@ -1,6 +1,6 @@
 package com.mvp1.whatiread.exception;
 
-import com.mvp1.whatiread.payload.ApiResponse;
+import com.mvp1.whatiread.dto.ApiResponse;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;

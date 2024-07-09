@@ -1,8 +1,8 @@
 package com.mvp1.whatiread.controller;
 
+import com.mvp1.whatiread.dto.ShelfDto;
 import com.mvp1.whatiread.entity.Shelf;
 import com.mvp1.whatiread.exception.AccessDeniedException;
-import com.mvp1.whatiread.dto.ShelfRequest;
 import com.mvp1.whatiread.repository.ShelfRepository;
 import com.mvp1.whatiread.security.CurrentUser;
 import com.mvp1.whatiread.security.UserPrincipal;
@@ -47,7 +47,8 @@ public class ShelfController {
 
   @PostMapping("/add")
   @Operation(description = "Adds a shelf to given user.")
-  public void addShelf(@CurrentUser UserPrincipal userPrincipal, @Valid @RequestBody ShelfRequest shelfRequest) {
+  public void addShelf(@CurrentUser UserPrincipal userPrincipal,
+      @Valid @RequestBody ShelfDto shelfRequest) {
     shelfService.addShelf(userPrincipal.getId(), shelfRequest);
   }
 

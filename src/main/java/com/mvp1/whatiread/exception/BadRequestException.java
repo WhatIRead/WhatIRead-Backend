@@ -1,6 +1,6 @@
 package com.mvp1.whatiread.exception;
 
-import com.mvp1.whatiread.payload.ApiResponse;
+import com.mvp1.whatiread.dto.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 

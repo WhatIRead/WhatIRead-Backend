@@ -1,14 +1,17 @@
 package com.mvp1.whatiread.service.impl;
 
+import com.mvp1.whatiread.dto.ShelfDto;
 import com.mvp1.whatiread.entity.Book;
 import com.mvp1.whatiread.entity.Shelf;
-import com.mvp1.whatiread.dto.ShelfRequest;
+import com.mvp1.whatiread.entity.user.User;
 import com.mvp1.whatiread.repository.BookRepository;
 import com.mvp1.whatiread.repository.ShelfRepository;
+import com.mvp1.whatiread.repository.UserRepository;
 import com.mvp1.whatiread.service.ShelfService;
 import com.mvp1.whatiread.service.UserService;
+import com.mvp1.whatiread.utils.Utils;
+import java.time.LocalDateTime;
 import java.util.List;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,14 +20,14 @@ public class ShelfServiceImpl implements ShelfService {
   private final ShelfRepository shelfRepository;
   private final BookRepository bookRepository;
   private final UserService userService;
-  private ModelMapper modelMapper;
+  private final UserRepository userRepository;
 
   public ShelfServiceImpl(ShelfRepository shelfRepository,
-      BookRepository bookRepository, UserService userService) {
+      BookRepository bookRepository, UserService userService, UserRepository userRepository) {
     this.shelfRepository = shelfRepository;
     this.bookRepository = bookRepository;
     this.userService = userService;
-    this.modelMapper = new ModelMapper();
+    this.userRepository = userRepository;
   }
 
   @Override
@@ -43,8 +46,14 @@ public class ShelfServiceImpl implements ShelfService {
   }
 
   @Override
-  public void addShelf(Long userId, ShelfRequest shelfRequest) {
-    Shelf shelf = modelMapper.map(shelfRequest, Shelf.class);
+  public void addShelf(Long userId, ShelfDto shelfRequest) {
+    User user = userRepository.findById(userId).orElse(null);
+    if (user == null) {
+      return;
+    }
+    Shelf shelf = Utils.modelMapper.map(shelfRequest, Shelf.class);
+    shelf.setUser(user);
+    shelf.setCreatedAt(LocalDateTime.now());
     shelfRepository.save(shelf);
   }
 

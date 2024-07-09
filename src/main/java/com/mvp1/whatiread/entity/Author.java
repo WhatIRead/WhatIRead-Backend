@@ -1,7 +1,9 @@
 package com.mvp1.whatiread.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -31,6 +33,6 @@ public class Author implements Serializable {
   private Date birthDate;
   private Date deathDate;
   private String awards;
-  @ManyToMany(mappedBy = "authors")
+  @ManyToMany(mappedBy = "authors", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private Set<Book> books = new HashSet<>();
 }

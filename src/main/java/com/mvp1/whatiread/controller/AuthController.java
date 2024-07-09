@@ -1,19 +1,19 @@
 package com.mvp1.whatiread.controller;
 
-import static com.mvp1.whatiread.utils.Constants.AUTH_BASE_PATH;
-import static com.mvp1.whatiread.utils.Constants.SIGN_IN_PATH;
-import static com.mvp1.whatiread.utils.Constants.SIGN_UP_PATH;
-import static com.mvp1.whatiread.utils.Constants.USER_ROLE_NOT_SET;
+import static com.mvp1.whatiread.utils.Utils.AUTH_BASE_PATH;
+import static com.mvp1.whatiread.utils.Utils.SIGN_IN_PATH;
+import static com.mvp1.whatiread.utils.Utils.SIGN_UP_PATH;
+import static com.mvp1.whatiread.utils.Utils.USER_ROLE_NOT_SET;
 
+import com.mvp1.whatiread.dto.ApiResponse;
+import com.mvp1.whatiread.dto.JwtAuthenticationResponse;
+import com.mvp1.whatiread.dto.LoginRequest;
+import com.mvp1.whatiread.dto.SignUpRequest;
 import com.mvp1.whatiread.entity.role.Role;
 import com.mvp1.whatiread.entity.role.RoleName;
 import com.mvp1.whatiread.entity.user.User;
 import com.mvp1.whatiread.exception.AppException;
 import com.mvp1.whatiread.exception.WhatIReadException;
-import com.mvp1.whatiread.payload.ApiResponse;
-import com.mvp1.whatiread.dto.JwtAuthenticationResponse;
-import com.mvp1.whatiread.dto.LoginRequest;
-import com.mvp1.whatiread.dto.SignUpRequest;
 import com.mvp1.whatiread.repository.RoleRepository;
 import com.mvp1.whatiread.repository.UserRepository;
 import com.mvp1.whatiread.security.JwtTokenProvider;

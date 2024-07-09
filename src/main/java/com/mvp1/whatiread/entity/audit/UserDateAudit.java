@@ -3,12 +3,11 @@ package com.mvp1.whatiread.entity.audit;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
+import java.io.Serial;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 
-@EqualsAndHashCode(callSuper = true)
 @MappedSuperclass
 @Data
 @JsonIgnoreProperties(
@@ -17,6 +16,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 )
 public abstract class UserDateAudit extends DateAudit {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   @CreatedBy

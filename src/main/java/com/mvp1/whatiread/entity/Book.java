@@ -1,7 +1,9 @@
 package com.mvp1.whatiread.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -36,10 +38,10 @@ public class Book implements Serializable {
   private String subtitle;
   private String coverImage;
   private Double rating;
-  @ManyToMany
+  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private Set<Author> authors = new HashSet<>();
-  @ManyToMany
+  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private Set<Genre> genres = new HashSet<>();
-  @ManyToMany
+  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private Set<Shelf> shelves = new HashSet<>();
 }

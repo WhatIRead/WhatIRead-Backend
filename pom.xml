@@ -79,21 +79,21 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>io.jsonwebtoken</groupId>
       <artifactId>jjwt-api</artifactId>
+      <groupId>io.jsonwebtoken</groupId>
       <version>0.12.5</version>
     </dependency>
     <dependency>
-      <groupId>io.jsonwebtoken</groupId>
       <artifactId>jjwt-impl</artifactId>
-      <version>0.12.5</version>
+      <groupId>io.jsonwebtoken</groupId>
       <scope>runtime</scope>
+      <version>0.12.5</version>
     </dependency>
     <dependency>
-      <groupId>io.jsonwebtoken</groupId>
-      <artifactId>jjwt-jackson</artifactId> <!-- or jjwt-gson if Gson is preferred -->
-      <version>0.12.5</version>
+      <artifactId>jjwt-jackson</artifactId>
+      <groupId>io.jsonwebtoken</groupId> <!-- or jjwt-gson if Gson is preferred -->
       <scope>runtime</scope>
+      <version>0.12.5</version>
     </dependency>
     <dependency>
       <artifactId>spring-security-jwt</artifactId>
@@ -106,19 +106,19 @@
       <version>3.2.0</version>
     </dependency>
     <dependency>
-      <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+      <groupId>org.springdoc</groupId>
       <version>2.6.0</version>
     </dependency>
     <dependency>
-      <groupId>com.github.javafaker</groupId>
       <artifactId>javafaker</artifactId>
-      <version>1.0.2</version>
+      <groupId>com.github.javafaker</groupId>
       <scope>test</scope>
+      <version>1.0.2</version>
     </dependency>
     <dependency>
-      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
+      <groupId>org.springframework.boot</groupId>
     </dependency>
   </dependencies>
 

@@ -1,6 +1,6 @@
 package com.mvp1.whatiread.service.impl;
 
-import static com.mvp1.whatiread.utils.Constants.IMAGE_SEARCH_URL;
+import static com.mvp1.whatiread.utils.Utils.IMAGE_SEARCH_URL;
 
 import com.mvp1.whatiread.client.OpenLibraryClient;
 import com.mvp1.whatiread.model.BookDetails;

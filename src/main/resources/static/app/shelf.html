@@ -3,9 +3,9 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Book Search and Shelf</title>
-  <link rel="stylesheet" href="shelf-style.css">
+  <link href="shelf-style.css" rel="stylesheet">
 </head>
 
 <body>
@@ -15,8 +15,8 @@
     <h1>Book Search and Shelf</h1>
   </div>
   <div class="search">
-    <input type="text" id="searchInput" placeholder="Search for a book title"
-           onkeypress="handleKeyPress(event)">
+    <input id="searchInput" onkeypress="handleKeyPress(event)" placeholder="Search for a book title"
+           type="text">
     <button onclick="searchBooks()">Search</button>
   </div>
   <div class="search-results-container">
@@ -24,9 +24,9 @@
     <div class="pagination" id="pagination"></div>
   </div>
   <div class="bookshelf">
-    <input type="text" id="shelfName" value="My Bookshelf" class="editable-shelf-name"/>
+    <input class="editable-shelf-name" id="shelfName" type="text" value="My Bookshelf"/>
     <div class="shelf" id="shelf"></div>
-    <button onclick="createShelf()" class="create-shelf-btn">Create Shelf</button>
+    <button class="create-shelf-btn" onclick="createShelf()">Create Shelf</button>
   </div>
 </div>
 
