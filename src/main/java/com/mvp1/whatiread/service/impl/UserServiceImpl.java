@@ -8,7 +8,6 @@ import com.mvp1.whatiread.dto.UserSummary;
 import com.mvp1.whatiread.entity.role.Role;
 import com.mvp1.whatiread.entity.role.RoleName;
 import com.mvp1.whatiread.entity.user.Address;
-import com.mvp1.whatiread.entity.user.Geo;
 import com.mvp1.whatiread.entity.user.User;
 import com.mvp1.whatiread.exception.AccessDeniedException;
 import com.mvp1.whatiread.exception.AppException;
@@ -45,7 +44,9 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserSummary getCurrentUser(UserPrincipal currentUser) {
-    return Utils.modelMapper.map(currentUser, UserSummary.class);
+    Long userId = currentUser.getId();
+    User user = userRepository.findUserWithDetailsById(userId).orElse(null);
+    return Utils.convertUserToUserSummary(user);
   }
 
   @Override
@@ -61,9 +62,9 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserProfile getUserProfile(String username) {
+  public UserSummary getUserProfile(String username) {
     User user = userRepository.getUserByName(username);
-    return Utils.modelMapper.map(user, UserProfile.class);
+    return Utils.convertUserToUserSummary(user);
   }
 
   @Override
@@ -150,10 +151,8 @@ public class UserServiceImpl implements UserService {
     User user = userRepository.findByUsername(currentUser.getUsername())
         .orElseThrow(
             () -> new ResourceNotFoundException("User", "username", currentUser.getUsername()));
-    Geo geo = new Geo(infoRequest.getLat(), infoRequest.getLng());
     Address address = new Address(infoRequest.getStreet(), infoRequest.getSuite(),
-        infoRequest.getCity(),
-        infoRequest.getZipcode(), geo);
+        infoRequest.getCity(), infoRequest.getZipcode());
     if (user.getId().equals(currentUser.getId())
         || currentUser.getAuthorities()
         .contains(new SimpleGrantedAuthority(RoleName.ROLE_ADMIN.toString()))) {

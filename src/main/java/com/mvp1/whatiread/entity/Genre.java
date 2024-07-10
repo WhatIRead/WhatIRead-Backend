@@ -25,8 +25,9 @@ public class Genre implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  @Column(nullable = false)
+  @Column(nullable = false, unique = true)
   private String name;
+  private String description;
   @ManyToMany(mappedBy = "genres", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private Set<Book> books = new HashSet<>();
 }

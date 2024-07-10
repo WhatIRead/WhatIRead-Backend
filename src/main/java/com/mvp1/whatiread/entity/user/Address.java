@@ -1,29 +1,23 @@
 package com.mvp1.whatiread.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mvp1.whatiread.entity.audit.UserDateAudit;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.io.Serial;
-import java.time.Instant;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "address")
-public class Address extends UserDateAudit {
-
-  @Serial
-  private static final long serialVersionUID = 1L;
+public class Address {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,71 +35,18 @@ public class Address extends UserDateAudit {
   @Column(name = "zipcode")
   private String zipcode;
 
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "geo_id")
-  private Geo geo;
-
   @OneToOne(mappedBy = "address")
   private User user;
 
-  public Address(String street, String suite, String city, String zipcode, Geo geo) {
+  public Address(String street, String suite, String city, String zipcode) {
     this.street = street;
     this.suite = suite;
     this.city = city;
     this.zipcode = zipcode;
-    this.geo = geo;
   }
 
   @JsonIgnore
   public Long getId() {
     return id;
-  }
-
-  @JsonIgnore
-  @Override
-  public Long getCreatedBy() {
-    return super.getCreatedBy();
-  }
-
-  @JsonIgnore
-  @Override
-  public void setCreatedBy(Long createdBy) {
-    super.setCreatedBy(createdBy);
-  }
-
-  @JsonIgnore
-  @Override
-  public Long getUpdatedBy() {
-    return super.getUpdatedBy();
-  }
-
-  @JsonIgnore
-  @Override
-  public void setUpdatedBy(Long updatedBy) {
-    super.setUpdatedBy(updatedBy);
-  }
-
-  @JsonIgnore
-  @Override
-  public Instant getCreatedAt() {
-    return super.getCreatedAt();
-  }
-
-  @JsonIgnore
-  @Override
-  public void setCreatedAt(Instant createdAt) {
-    super.setCreatedAt(createdAt);
-  }
-
-  @JsonIgnore
-  @Override
-  public Instant getUpdatedAt() {
-    return super.getUpdatedAt();
-  }
-
-  @JsonIgnore
-  @Override
-  public void setUpdatedAt(Instant updatedAt) {
-    super.setUpdatedAt(updatedAt);
   }
 }

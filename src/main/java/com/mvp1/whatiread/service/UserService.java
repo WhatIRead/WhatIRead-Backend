@@ -16,7 +16,7 @@ public interface UserService {
 
   UserIdentityAvailability checkEmailAvailability(String email);
 
-  UserProfile getUserProfile(String username);
+  UserSummary getUserProfile(String username);
 
   User addUser(User user);
 

@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Schema(description = "Request DTO for creating or updating a book shelf")
-public class ShelfDto {
+public class ShelfDTO {
 
   @Schema(description = "Name of the shelf", example = "My Favorite Books")
   private String name;
@@ -21,5 +21,5 @@ public class ShelfDto {
   private Boolean isPublic;
 
   @ArraySchema(arraySchema = @Schema(description = "List of books added to the shelf"), schema = @Schema(implementation = BookDTO.class))
-  private Set<BookDTO> books;
+  private Set<BookDTO> booksList;
 }

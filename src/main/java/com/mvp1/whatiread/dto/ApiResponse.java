@@ -3,6 +3,7 @@ package com.mvp1.whatiread.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import java.io.Serial;
 import java.io.Serializable;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 @JsonPropertyOrder({"success", "message"})
 public class ApiResponse implements Serializable {
 
+  @Serial
   @JsonIgnore
   private static final long serialVersionUID = 7702134516418120340L;
 

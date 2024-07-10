@@ -1,5 +1,6 @@
 package com.mvp1.whatiread.dto;
 
+import com.mvp1.whatiread.entity.Shelf;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
@@ -8,9 +9,11 @@ import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class UserSummary {
 
@@ -36,11 +39,11 @@ public class UserSummary {
   private String phone;
 
   @Schema(description = "Address of the user")
-  private AddressDto address;
+  private AddressDTO address;
 
-  @ArraySchema(schema = @Schema(description = "Set of shelves belonging to the user", implementation = ShelfDto.class))
-  private Set<ShelfDto> shelves;
+  @ArraySchema(schema = @Schema(description = "Set of shelves belonging to the user", implementation = Shelf.class))
+  private Set<ShelfDTO> shelvesList;
 
   @ArraySchema(schema = @Schema(description = "Set of user profiles representing friends", implementation = UserProfile.class))
-  private Set<UserProfile> friends;
+  private Set<UserProfile> friendsList;
 }

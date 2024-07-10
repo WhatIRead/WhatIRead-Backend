@@ -2,6 +2,8 @@ package com.mvp1.whatiread.utils;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.Getter;
 
 @Getter
@@ -47,12 +49,24 @@ public enum BookGenre implements Serializable {
       "Narrative works presented in comic-strip format, often with more complex storytelling and themes."),
   YOUNG_ADULT("Young Adult (YA)",
       "Books targeted at readers aged roughly 12-18, covering a wide range of genres but often focusing on coming-of-age themes and issues.");
+  private static final Map<String, BookGenre> DISPLAY_NAME_MAP = new HashMap<>();
+
+  static {
+    for (BookGenre genre : BookGenre.values()) {
+      DISPLAY_NAME_MAP.put(genre.displayName, genre);
+    }
+  }
+
   private final String displayName;
   private final String description;
 
   BookGenre(String displayName, String description) {
     this.displayName = displayName;
     this.description = description;
+  }
+
+  public static BookGenre fromDisplayName(String displayName) {
+    return DISPLAY_NAME_MAP.get(displayName);
   }
 }
 

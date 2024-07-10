@@ -1,19 +1,18 @@
 package com.mvp1.whatiread.service;
 
-import com.mvp1.whatiread.dto.ShelfDto;
+import com.mvp1.whatiread.dto.ShelfDTO;
 import com.mvp1.whatiread.entity.Book;
-import com.mvp1.whatiread.entity.Shelf;
-import java.util.List;
+import java.util.Set;
 
 public interface ShelfService {
 
-  List<Book> getAllBookFromShelf(long shelfId);
+  Set<Book> getAllBookFromShelf(long shelfId);
 
-  List<Shelf> getAllShelvesForUser(Long userId);
+  Set<ShelfDTO> getAllShelvesForUser(Long userId);
 
-  Shelf getShelfForUser(Long userId, Long shelfId);
+  ShelfDTO getShelfForUser(Long userId, Long shelfId);
 
-  void addShelf(Long userId, ShelfDto shelf);
+  void addShelf(Long userId, ShelfDTO shelf);
 
   void deleteShelf(long shelfId);
 }

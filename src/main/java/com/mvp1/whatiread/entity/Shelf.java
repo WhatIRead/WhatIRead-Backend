@@ -7,6 +7,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import java.io.Serial;
@@ -38,7 +40,12 @@ public class Shelf implements Serializable {
   private Boolean isPublic;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
-  @ManyToMany(mappedBy = "shelves", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @JoinTable(
+      name = "shelf_books",
+      joinColumns = @JoinColumn(name = "shelf_id", referencedColumnName = "id"),
+      inverseJoinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id")
+  )
   private Set<Book> books = new HashSet<>();
   @ManyToOne
   private User user;

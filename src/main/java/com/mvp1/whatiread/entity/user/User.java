@@ -29,6 +29,7 @@ import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.NaturalId;
 
 @Entity
@@ -38,6 +39,7 @@ import org.hibernate.annotations.NaturalId;
     @UniqueConstraint(columnNames = {"email"})}
 )
 @NoArgsConstructor
+@ToString
 public class User extends DateAudit {
 
   @Serial
@@ -88,12 +90,4 @@ public class User extends DateAudit {
   @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "address_id")
   private Address address;
-
-  public User(String firstName, String lastName, String username, String email, String password) {
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.username = username;
-    this.email = email;
-    this.password = password;
-  }
 }

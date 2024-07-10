@@ -42,6 +42,6 @@ public class Book implements Serializable {
   private Set<Author> authors = new HashSet<>();
   @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private Set<Genre> genres = new HashSet<>();
-  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @ManyToMany(mappedBy = "books", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private Set<Shelf> shelves = new HashSet<>();
 }

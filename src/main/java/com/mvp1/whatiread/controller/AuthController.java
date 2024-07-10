@@ -17,6 +17,7 @@ import com.mvp1.whatiread.exception.WhatIReadException;
 import com.mvp1.whatiread.repository.RoleRepository;
 import com.mvp1.whatiread.repository.UserRepository;
 import com.mvp1.whatiread.security.JwtTokenProvider;
+import com.mvp1.whatiread.utils.Utils;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.time.Instant;
@@ -83,17 +84,12 @@ public class AuthController {
       throw new WhatIReadException(HttpStatus.BAD_REQUEST, "Email is already taken");
     }
 
-    String firstName = signUpRequest.getFirstName().toLowerCase();
-
-    String lastName = signUpRequest.getLastName().toLowerCase();
-
-    String username = signUpRequest.getUsername().toLowerCase();
-
-    String email = signUpRequest.getEmail().toLowerCase();
-
-    String password = passwordEncoder.encode(signUpRequest.getPassword());
-
-    User user = new User(firstName, lastName, username, email, password);
+    User user = Utils.modelMapper.map(signUpRequest, User.class);
+    user.setCreatedAt(Instant.now());
+    user.setUpdatedAt(Instant.now());
+    user.setUsername(signUpRequest.getUsername().toLowerCase());
+    user.setEmail(signUpRequest.getEmail().toLowerCase());
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
 
     List<Role> roles = new ArrayList<>();
 
@@ -108,8 +104,6 @@ public class AuthController {
     }
 
     user.setRoles(roles);
-    user.setCreatedAt(Instant.now());
-    user.setUpdatedAt(Instant.now());
 
     User result = userRepository.save(user);
 
@@ -117,6 +111,7 @@ public class AuthController {
         .buildAndExpand(result.getId()).toUri();
 
     return ResponseEntity.created(location)
-        .body(new ApiResponse(Boolean.TRUE, String.format("%s registered successfully", username)));
+        .body(new ApiResponse(Boolean.TRUE,
+            String.format("%s registered successfully", user.getUsername())));
   }
 }

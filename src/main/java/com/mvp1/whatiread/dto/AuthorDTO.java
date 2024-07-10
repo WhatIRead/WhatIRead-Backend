@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 /**
@@ -15,8 +16,9 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
+@Builder
 @Schema(description = "Data Transfer Object for Author information")
-public class AuthorDto implements Serializable {
+public class AuthorDTO implements Serializable {
 
   @NotBlank(message = "Author name is required.")
   @Schema(description = "Name of the author", example = "John Doe")

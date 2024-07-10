@@ -9,11 +9,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import java.util.Set;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Range;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @JsonInclude(Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Schema(description = "Data Transfer Object for Book information")
@@ -36,9 +38,9 @@ public class BookDTO {
   @Schema(description = "Rating of the book", example = "4.5")
   private Double rating;
 
-  @ArraySchema(arraySchema = @Schema(description = "List of authors of the book"), schema = @Schema(implementation = AuthorDto.class))
-  private Set<AuthorDto> authors;
+  @ArraySchema(arraySchema = @Schema(description = "List of authors of the book"), schema = @Schema(implementation = AuthorDTO.class))
+  private Set<AuthorDTO> authorsList;
 
   @ArraySchema(arraySchema = @Schema(description = "List of genres the book belongs to", example = "[\"SCIENCE_FICTION\", \"ADVENTURE\"]"))
-  private Set<BookGenre> genres;
+  private Set<BookGenre> genresList;
 }

@@ -4,15 +4,19 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * DTO for {@link com.mvp1.whatiread.entity.user.Address}
  */
 @AllArgsConstructor
 @Getter
+@Setter
+@Builder
 @Schema(description = "Data Transfer Object for Address information")
-public class AddressDto implements Serializable {
+public class AddressDTO implements Serializable {
 
   @NotBlank(message = "Street is required.")
   @Schema(description = "Street name of the address", example = "123 Main St")

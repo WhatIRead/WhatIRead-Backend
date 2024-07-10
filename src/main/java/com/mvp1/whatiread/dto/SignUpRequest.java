@@ -43,6 +43,6 @@ public class SignUpRequest {
   @Schema(description = "Password for the user", example = "password123")
   private String password;
 
-  @Schema(implementation = AddressDto.class)
-  private AddressDto address;
+  @Schema(implementation = AddressDTO.class)
+  private AddressDTO address;
 }

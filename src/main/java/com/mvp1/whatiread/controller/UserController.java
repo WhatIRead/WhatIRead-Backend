@@ -64,10 +64,10 @@ public class UserController {
 
   @GetMapping("/{username}/profile")
   @Operation(description = "This api returns a given user profile details.")
-  public ResponseEntity<UserProfile> getUSerProfile(
+  public ResponseEntity<UserSummary> getUSerProfile(
       @PathVariable(value = "username") String username) {
-    UserProfile userProfile = userService.getUserProfile(username);
-    return new ResponseEntity<>(userProfile, HttpStatus.OK);
+    UserSummary userSummary = userService.getUserProfile(username);
+    return new ResponseEntity<>(userSummary, HttpStatus.OK);
   }
 
   @PostMapping("/add")

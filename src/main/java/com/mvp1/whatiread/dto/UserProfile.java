@@ -27,8 +27,8 @@ public class UserProfile {
   @Schema(description = "Email address of the user", example = "john.doe@example.com")
   private String email;
 
-  @Schema(implementation = AddressDto.class)
-  private AddressDto address;
+  @Schema(implementation = AddressDTO.class)
+  private AddressDTO address;
 
   @Schema(description = "Phone number of the user", example = "+1234567890")
   private String phone;
