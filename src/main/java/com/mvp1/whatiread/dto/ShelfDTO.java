@@ -1,5 +1,7 @@
 package com.mvp1.whatiread.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Set;
@@ -8,6 +10,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@JsonInclude(Include.NON_EMPTY)
 @Schema(description = "Request DTO for creating or updating a book shelf")
 public class ShelfDTO {
 

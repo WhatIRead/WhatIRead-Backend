@@ -16,7 +16,7 @@ import org.hibernate.validator.constraints.Range;
 @Getter
 @Setter
 @NoArgsConstructor
-@JsonInclude(Include.NON_NULL)
+@JsonInclude(Include.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Schema(description = "Data Transfer Object for Book information")
 public class BookDTO {

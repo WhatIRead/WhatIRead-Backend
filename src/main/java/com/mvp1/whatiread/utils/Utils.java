@@ -43,17 +43,13 @@ public class Utils {
 
   // Converters
   public static AddressDTO convertAddressToAddressDto(Address address) {
+    if(address == null) return null;
     return AddressDTO.builder()
         .city(address.getCity())
         .street(address.getStreet())
         .suite(address.getSuite())
         .zipcode(address.getZipcode())
         .build();
-  }
-
-  public static Address convertAddressDTOToAddress(AddressDTO address) {
-    return new Address(address.getStreet(), address.getSuite(), address.getCity(),
-        address.getZipcode());
   }
 
   public static Set<UserProfile> convertFriendsToProfiles(Set<FriendShip> friends) {
@@ -124,6 +120,7 @@ public class Utils {
   }
 
   public static ShelfDTO convertShelfToShelfDTO(Shelf shelf) {
+    if(shelf == null) return null;
     ShelfDTO shelfDTO = modelMapper.map(shelf, ShelfDTO.class);
     shelfDTO.setBooksList(convertBookToBookDTO(shelf.getBooks()));
     return shelfDTO;

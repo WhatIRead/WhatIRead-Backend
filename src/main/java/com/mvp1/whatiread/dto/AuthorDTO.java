@@ -1,5 +1,7 @@
 package com.mvp1.whatiread.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.mvp1.whatiread.utils.Nationality;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -17,6 +19,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 @Builder
+@JsonInclude(Include.NON_EMPTY)
 @Schema(description = "Data Transfer Object for Author information")
 public class AuthorDTO implements Serializable {
 

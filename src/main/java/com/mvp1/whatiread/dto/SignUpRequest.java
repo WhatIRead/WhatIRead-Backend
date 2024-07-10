@@ -1,5 +1,7 @@
 package com.mvp1.whatiread.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -11,6 +13,7 @@ import lombok.ToString;
 @Data
 @Builder
 @ToString
+@JsonInclude(Include.NON_EMPTY)
 @Schema(description = "Request DTO for user sign up")
 public class SignUpRequest {
 
