@@ -43,7 +43,9 @@ public class Utils {
 
   // Converters
   public static AddressDTO convertAddressToAddressDto(Address address) {
-    if(address == null) return null;
+    if (address == null) {
+      return null;
+    }
     return AddressDTO.builder()
         .city(address.getCity())
         .street(address.getStreet())
@@ -120,7 +122,9 @@ public class Utils {
   }
 
   public static ShelfDTO convertShelfToShelfDTO(Shelf shelf) {
-    if(shelf == null) return null;
+    if (shelf == null) {
+      return null;
+    }
     ShelfDTO shelfDTO = modelMapper.map(shelf, ShelfDTO.class);
     shelfDTO.setBooksList(convertBookToBookDTO(shelf.getBooks()));
     return shelfDTO;

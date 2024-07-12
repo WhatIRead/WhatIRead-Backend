@@ -7,8 +7,11 @@ import com.mvp1.whatiread.dto.UserProfile;
 import com.mvp1.whatiread.dto.UserSummary;
 import com.mvp1.whatiread.entity.user.User;
 import com.mvp1.whatiread.security.UserPrincipal;
+import java.util.Set;
 
 public interface UserService {
+
+  Set<UserProfile> getUsersWithGivenUsername(String username);
 
   UserSummary getCurrentUser(UserPrincipal currentUser);
 

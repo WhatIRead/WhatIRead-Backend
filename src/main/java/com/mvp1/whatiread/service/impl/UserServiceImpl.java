@@ -21,11 +21,17 @@ import com.mvp1.whatiread.service.UserService;
 import com.mvp1.whatiread.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+/**
+ * User Service Implementation of {@link com.mvp1.whatiread.service.UserService} Handles all the
+ * business logic related to User.
+ */
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -40,6 +46,13 @@ public class UserServiceImpl implements UserService {
     this.userRepository = userRepository;
     this.roleRepository = roleRepository;
     this.passwordEncoder = passwordEncoder;
+  }
+
+  @Override
+  public Set<UserProfile> getUsersWithGivenUsername(String username) {
+    return userRepository.findUsersLikeUsername(username).stream()
+        .map(user -> Utils.modelMapper.map(user, UserProfile.class))
+        .collect(Collectors.toSet());
   }
 
   @Override

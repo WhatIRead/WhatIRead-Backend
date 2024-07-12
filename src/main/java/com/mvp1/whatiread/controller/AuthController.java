@@ -18,6 +18,7 @@ import com.mvp1.whatiread.repository.RoleRepository;
 import com.mvp1.whatiread.repository.UserRepository;
 import com.mvp1.whatiread.security.JwtTokenProvider;
 import com.mvp1.whatiread.utils.Utils;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.time.Instant;
@@ -39,6 +40,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping(AUTH_BASE_PATH)
+@Schema(description = "This is Authentication controller which handles signup and signin.")
 public class AuthController {
 
   private final AuthenticationManager authenticationManager;

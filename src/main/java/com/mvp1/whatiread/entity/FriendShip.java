@@ -1,7 +1,11 @@
 package com.mvp1.whatiread.entity;
 
 import com.mvp1.whatiread.entity.user.User;
+import com.mvp1.whatiread.utils.RequestStatus;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -10,6 +14,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.NaturalId;
 
 @Entity
 @Getter
@@ -25,5 +30,9 @@ public class FriendShip implements Serializable {
   private User user;
   @ManyToOne
   private User friend;
+  @Column(nullable = false)
+  @Enumerated(EnumType.STRING)
+  private RequestStatus status;
+  private String requestMessage;
 }
 
