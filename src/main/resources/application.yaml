@@ -33,5 +33,5 @@ management:
     enabled: true
 
 app:
-  jwtSecret: c29tZSByYW5kb20gc2hpdCBjb250ZW50YXNkZ2FzZGdhc2RnYXNkZ2FzZGdhc2RnYXNkZ2FzZGdhc2RnYXNkZ2FzZGc
-  jwtExpirationInMs: 3600000
+  jwtSecret: ${JWT_SECRET}
+  jwtExpirationInMs: ${JWT_EXPIRATION}
