@@ -31,7 +31,7 @@ public class Book implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  @Column(nullable = false)
+  @Column(nullable = false, unique = true)
   private String isbn;
   @Column(nullable = false)
   private String title;

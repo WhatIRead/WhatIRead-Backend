@@ -35,8 +35,8 @@ import org.hibernate.annotations.NaturalId;
 @Entity
 @Getter
 @Setter
-@Table(name = "USERS", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"}),
-    @UniqueConstraint(columnNames = {"email"})}
+@Table(
+    name = "USERS"
 )
 @NoArgsConstructor
 @ToString
@@ -50,21 +50,24 @@ public class User extends DateAudit {
 
   @NotBlank
   @Size(max = 40)
+  @Column(nullable = false)
   private String firstName;
 
   @NotBlank
   @Size(max = 40)
+  @Column(nullable = false)
   private String lastName;
 
   @NotBlank
   @Size(max = 15)
+  @Column(unique = true, nullable = false)
   private String username;
 
   @NotBlank
   @NaturalId
   @Size(max = 40)
   @Email
-  @Column(nullable = false)
+  @Column(nullable = false, unique = true)
   private String email;
 
   @NotBlank

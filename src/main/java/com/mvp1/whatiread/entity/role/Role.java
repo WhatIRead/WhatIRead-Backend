@@ -30,7 +30,7 @@ public class Role implements Serializable {
 
   @Enumerated(EnumType.STRING)
   @NaturalId
-  @Column(name = "name")
+  @Column(name = "name", unique = true, nullable = false)
   private RoleName name;
 
   public Role(RoleName name) {

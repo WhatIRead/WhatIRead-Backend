@@ -13,8 +13,11 @@ import jakarta.validation.Valid;
 import java.util.Set;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,22 +48,22 @@ public class FriendController {
     return null;
   }
 
-  @PostMapping("/addFriend")
-  @Schema(description = "Add friend")
+  @PostMapping("/addFriendRequest")
+  @Schema(description = "Add friend request")
   public ResponseEntity<ApiResponse> addFriendRequest(@CurrentUser UserPrincipal currentUser,
       @Valid @RequestBody FriendDTO friendRequest) {
     return friendService.addFriendRequest(currentUser.getId(), friendRequest);
   }
 
-  @PostMapping("/modifyFriend")
-  @Schema(description = "Add friend")
+  @PutMapping("/modifyFriendRequest")
+  @Schema(description = "Modify friend request")
   public ResponseEntity<ApiResponse> modifyFriendRequest(@CurrentUser UserPrincipal currentUser,
       @Valid @RequestBody FriendDTO friendRequest) {
     return friendService.modifyFriendRequest(currentUser.getId(), friendRequest);
   }
 
-  @PostMapping("/deleteFriend")
-  @Schema(description = "Add friend")
+  @DeleteMapping("/deleteFriendRequest")
+  @Schema(description = "Delete friend request")
   public ResponseEntity<ApiResponse> deleteFriendRequest(@CurrentUser UserPrincipal currentUser,
       @Valid @RequestBody FriendDTO friendRequest) {
     return friendService.deleteFriendRequest(currentUser.getId(), friendRequest);

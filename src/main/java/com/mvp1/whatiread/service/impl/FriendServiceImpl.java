@@ -34,9 +34,21 @@ public class FriendServiceImpl implements FriendService {
         .orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));
   }
 
+  private Long getFriendRequestId(Long userId, FriendDTO friendRequest, User user, User friend) {
+    return friendrequestRepository.findByUserIdAndFriendId(userId, friend.getId())
+        .orElseThrow(() -> {
+          List<Resource> resources = new ArrayList<>();
+          Resource r1 = new Resource("User", "username", user.getUsername());
+          Resource r2 = new Resource("Friend", "username", friend.getUsername());
+          resources.add(r1);
+          resources.add(r2);
+          return new ResourceNotFoundException(resources);
+        });
+  }
+
   /**
    * @param userId
-   * @param friendRequests
+   * @param friendRequest
    * @return
    */
   @Override
@@ -49,33 +61,31 @@ public class FriendServiceImpl implements FriendService {
         () -> new ResourceNotFoundException("User", "userName", friendRequest.getUserName())));
     friendrequestRepository.save(friend);
     return new ResponseEntity<>(new ApiResponse(Boolean.TRUE,
-        "Friend request for " + friendRequest.getUserName() + " created Successfully."), HttpStatus.CREATED);
+        "Friend request for " + friendRequest.getUserName() + " created successfully."),
+        HttpStatus.CREATED);
   }
 
   public ResponseEntity<ApiResponse> modifyFriendRequest(Long userId, FriendDTO friendRequest) {
-    FriendRequest friend = Utils.modelMapper.map(friendRequest, FriendRequest.class);
-    friend.setUser(getUser(userId));
-    friend.setFriend(userRepository.findByUsername(friendRequest.getUserName()).orElseThrow(
-        () -> new ResourceNotFoundException("User", "userName", friendRequest.getUserName())));
-    friendrequestRepository.save(friend);
-    if(!friendrequestRepository.existsByUserIdAndFriendId(friend.getUser().getId(), friend.getFriend().getId())){
-      List<Resource> errors = new ArrayList<>();
-      Resource r1 = new Resource("User", "username", friendRequest.getUserName());
-      throw new ResourceNotFoundException("User", "username", friend.getUser().getUsername());
-    }
+    User user = getUser(userId);
+    User friend = userRepository.findByUsername(friendRequest.getUserName()).orElseThrow(
+        () -> new ResourceNotFoundException("User", "userName", friendRequest.getUserName()));
+    FriendRequest request = Utils.modelMapper.map(friendRequest, FriendRequest.class);
+    request.setUser(user);
+    request.setFriend(friend);
+    request.setId(getFriendRequestId(userId, friendRequest, user, friend));
+    friendrequestRepository.save(request);
     return new ResponseEntity<>(new ApiResponse(Boolean.TRUE,
-        "Friend request for " + friendRequest.getUserName() + " created Successfully."),
+        "Friend request for " + friendRequest.getUserName() + " modified successfully."),
         HttpStatus.OK);
   }
 
   public ResponseEntity<ApiResponse> deleteFriendRequest(Long userId, FriendDTO friendRequest) {
     User user = getUser(userId);
-    FriendRequest friend = Utils.modelMapper.map(friendRequest, FriendRequest.class);
-    friend.setUser(user);
-    friend.setFriend(userRepository.findByUsername(friendRequest.getUserName()).orElseThrow(
-        () -> new ResourceNotFoundException("User", "userName", friendRequest.getUserName())));
-    friendrequestRepository.delete(friend);
+    User friend = userRepository.findByUsername(friendRequest.getUserName()).orElseThrow(
+        () -> new ResourceNotFoundException("User", "userName", friendRequest.getUserName()));
+    friendrequestRepository.deleteById(getFriendRequestId(userId, friendRequest, user, friend));
     return new ResponseEntity<>(new ApiResponse(Boolean.TRUE,
-        "Friend request for " + friendRequest.getUserName() + " deleted Successfully."), HttpStatus.OK);
+        "Friend request for " + friendRequest.getUserName() + " deleted successfully."),
+        HttpStatus.OK);
   }
 }
