@@ -23,12 +23,9 @@ public class RestControllerExceptionHandler {
   public ResponseEntity<ApiResponse> resolveException(WhatIReadException exception) {
     String message = exception.getMessage();
     HttpStatus status = exception.getStatus();
-
     ApiResponse apiResponse = new ApiResponse();
-
     apiResponse.setSuccess(Boolean.FALSE);
     apiResponse.setMessage(message);
-
     return new ResponseEntity<>(apiResponse, status);
   }
 
@@ -36,9 +33,7 @@ public class RestControllerExceptionHandler {
   @ResponseBody
   @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
   public ResponseEntity<ApiResponse> resolveException(UnauthorizedException exception) {
-
     ApiResponse apiResponse = exception.getApiResponse();
-
     return new ResponseEntity<>(apiResponse, HttpStatus.UNAUTHORIZED);
   }
 
@@ -46,7 +41,6 @@ public class RestControllerExceptionHandler {
   @ResponseBody
   public ResponseEntity<ApiResponse> resolveException(BadRequestException exception) {
     ApiResponse apiResponse = exception.getApiResponse();
-
     return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
   }
 
@@ -54,7 +48,6 @@ public class RestControllerExceptionHandler {
   @ResponseBody
   public ResponseEntity<ApiResponse> resolveException(ResourceNotFoundException exception) {
     ApiResponse apiResponse = exception.getApiResponse();
-
     return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
   }
 
@@ -62,7 +55,6 @@ public class RestControllerExceptionHandler {
   @ResponseBody
   public ResponseEntity<ApiResponse> resolveException(AccessDeniedException exception) {
     ApiResponse apiResponse = exception.getApiResponse();
-
     return new ResponseEntity<>(apiResponse, HttpStatus.FORBIDDEN);
   }
 
@@ -71,10 +63,9 @@ public class RestControllerExceptionHandler {
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ResponseEntity<ExceptionResponse> resolveException(MethodArgumentNotValidException ex) {
     List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
-    List<String> messages = new ArrayList<>(fieldErrors.size());
-    for (FieldError error : fieldErrors) {
-      messages.add(error.getField() + " - " + error.getDefaultMessage());
-    }
+    List<String> messages = fieldErrors.stream()
+        .map(error -> error.getField() + " - " + error.getDefaultMessage())
+        .toList();
     return new ResponseEntity<>(
         new ExceptionResponse(messages, HttpStatus.BAD_REQUEST.getReasonPhrase(),
             HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
@@ -104,7 +95,6 @@ public class RestControllerExceptionHandler {
             + ex.getSupportedHttpMethods();
     List<String> messages = new ArrayList<>(1);
     messages.add(message);
-
     return new ResponseEntity<>(
         new ExceptionResponse(messages, HttpStatus.METHOD_NOT_ALLOWED.getReasonPhrase(),
             HttpStatus.METHOD_NOT_ALLOWED.value()), HttpStatus.METHOD_NOT_ALLOWED);

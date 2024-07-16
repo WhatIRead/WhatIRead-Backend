@@ -14,7 +14,7 @@ public class ApiResponse implements Serializable {
 
   @Serial
   @JsonIgnore
-  private static final long serialVersionUID = 7702134516418120340L;
+  private static final long serialVersionUID = 1L;
 
   @JsonProperty("success")
   private Boolean success;

@@ -1,9 +1,14 @@
 package com.mvp1.whatiread.service;
 
+import com.mvp1.whatiread.dto.ApiResponse;
 import com.mvp1.whatiread.dto.FriendDTO;
-import java.util.Set;
+import org.springframework.http.ResponseEntity;
 
 public interface FriendService {
 
-  void addFriendRequests(Long userId, Set<FriendDTO> friendRequests);
+  ResponseEntity<ApiResponse> addFriendRequest(Long userId, FriendDTO friendRequests);
+
+  ResponseEntity<ApiResponse> modifyFriendRequest(Long userId, FriendDTO friendRequests);
+
+  ResponseEntity<ApiResponse> deleteFriendRequest(Long userId, FriendDTO friendRequest);
 }

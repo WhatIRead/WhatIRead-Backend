@@ -8,7 +8,7 @@ import com.mvp1.whatiread.dto.UserProfile;
 import com.mvp1.whatiread.dto.UserSummary;
 import com.mvp1.whatiread.entity.Author;
 import com.mvp1.whatiread.entity.Book;
-import com.mvp1.whatiread.entity.FriendShip;
+import com.mvp1.whatiread.entity.FriendRequest;
 import com.mvp1.whatiread.entity.Genre;
 import com.mvp1.whatiread.entity.Shelf;
 import com.mvp1.whatiread.entity.user.Address;
@@ -54,7 +54,7 @@ public class Utils {
         .build();
   }
 
-  public static Set<UserProfile> convertFriendsToProfiles(Set<FriendShip> friends) {
+  public static Set<UserProfile> convertFriendsToProfiles(Set<FriendRequest> friends) {
     return friends.stream().map(user -> Utils.modelMapper.map(user.getFriend(), UserProfile.class))
         .collect(Collectors.toSet());
   }

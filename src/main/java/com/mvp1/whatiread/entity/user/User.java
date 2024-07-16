@@ -1,7 +1,7 @@
 package com.mvp1.whatiread.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mvp1.whatiread.entity.FriendShip;
+import com.mvp1.whatiread.entity.FriendRequest;
 import com.mvp1.whatiread.entity.Shelf;
 import com.mvp1.whatiread.entity.audit.DateAudit;
 import com.mvp1.whatiread.entity.role.Role;
@@ -79,7 +79,7 @@ public class User extends DateAudit {
   private Set<Shelf> shelves = new HashSet<>();
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-  private Set<FriendShip> friends = new HashSet<>();
+  private Set<FriendRequest> friends = new HashSet<>();
 
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(name = "user_role",

@@ -12,9 +12,11 @@ import jakarta.validation.Valid;
 import java.util.Set;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,12 +55,24 @@ public class ShelfController {
             + userPrincipal.getUsername(), HttpStatus.CREATED);
   }
 
-  @GetMapping("/shelf/{shelfId}")
+  @GetMapping("/{shelfId}")
   @Operation(description = "Returns a shelf with given shelf-id of given user.")
   public ResponseEntity<ShelfDTO> getShelfForUser(@PathVariable Long shelfId,
       @CurrentUser UserPrincipal currentUser) {
     return new ResponseEntity<>(shelfService.getShelfForUser(currentUser.getId(), shelfId),
         HttpStatus.OK);
+  }
+
+  @PutMapping("/{shelfId}")
+  public ResponseEntity<String> updateShelf(@CurrentUser UserPrincipal userPrincipal,
+      @Valid @RequestBody ShelfDTO shelfDTO, @PathVariable(name = "shelfId") Long shelfId) {
+    return null;
+  }
+
+  @DeleteMapping("/{shelfId}")
+  public ResponseEntity<String> updateShelf(@CurrentUser UserPrincipal userPrincipal,
+      @PathVariable(name = "shelfId") Long shelfId) {
+    return null;
   }
 
 

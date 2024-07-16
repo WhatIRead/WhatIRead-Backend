@@ -21,6 +21,8 @@ public class FriendDTO {
   @NotBlank(message = "UserName is required")
   @Schema(description = "UserName of friend", example = "user1")
   private String userName;
+  @Schema(description = "Name of friend.")
+  private String name;
   @Schema(description = "Request Message for friend",
       example = "Hey user1! I am user2, please accept my friend request.")
   private String requestMessage;

@@ -1,31 +1,33 @@
 package com.mvp1.whatiread.entity;
 
 import com.mvp1.whatiread.entity.user.User;
-import com.mvp1.whatiread.utils.RequestStatus;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
 @Getter
 @Setter
-public class FriendShip {
+@Entity
+public class Message {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
   @ManyToOne
-  private User user;
+  @JoinColumn(name = "sender_id")
+  private User sender;
+
   @ManyToOne
-  private User friend;
-  @Column(nullable = false)
-  @Enumerated(EnumType.STRING)
-  private RequestStatus status;
+  @JoinColumn(name = "conversation_id")
+  private Conversation conversation;
+
+  private String content;
+  private LocalDateTime timestamp;
 }

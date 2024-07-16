@@ -1,5 +1,6 @@
 package com.mvp1.whatiread.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.mvp1.whatiread.entity.Shelf;
@@ -20,6 +21,7 @@ import lombok.NoArgsConstructor;
 @JsonInclude(Include.NON_EMPTY)
 public class UserSummary {
 
+  @JsonIgnore
   private Long id;
 
   @NotBlank
