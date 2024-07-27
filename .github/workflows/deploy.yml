@@ -7,6 +7,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment: Dev
 
     steps:
       - uses: actions/checkout@v2
@@ -25,7 +26,8 @@ jobs:
           PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
           HOST: ${{ secrets.EC2_HOST }}
         run: |
-          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          echo "${PRIVATE_KEY}" > private_key
+          chmod 600 private_key
           scp -o StrictHostKeyChecking=no -i private_key target/whatiread.jar ubuntu@${HOST}:/home/ubuntu/apps/whatiread/
           ssh -o StrictHostKeyChecking=no -i private_key ubuntu@${HOST} '
             sudo systemctl stop whatiread
