@@ -69,12 +69,13 @@ public class Utils {
   }
 
   public static Set<Author> convertAuthorDTOToAuthors(Set<AuthorDTO> authors) {
-    return authors.parallelStream().map(authorDTO ->
+    return authors == null ? null : authors.parallelStream().map(authorDTO ->
         modelMapper.map(authorDTO, Author.class)).collect(Collectors.toSet());
   }
 
   public static Set<Genre> convertBookGenreToGenres(Set<BookGenre> bookGenres) {
-    return bookGenres.stream().map(genreDTO -> {
+    return bookGenres == null ? null :
+    bookGenres.stream().map(genreDTO -> {
       Genre genre = new Genre();
       genre.setName(genreDTO.getDisplayName());
       genre.setDescription(genreDTO.getDescription());
