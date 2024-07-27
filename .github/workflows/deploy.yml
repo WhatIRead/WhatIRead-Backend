@@ -25,11 +25,16 @@ jobs:
         env:
           PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
           HOST: ${{ secrets.EC2_HOST }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          JWT_EXPIRATION: ${{ secrets.JWT_EXPIRATION }}
         run: |
           echo "${PRIVATE_KEY}" > private_key
           chmod 600 private_key
           scp -o StrictHostKeyChecking=no -i private_key target/whatiread.jar ubuntu@${HOST}:/home/ubuntu/apps/whatiread/
           ssh -o StrictHostKeyChecking=no -i private_key ubuntu@${HOST} '
+            source /home/ubuntu/apps/whatiread/read.env
+            export JWT_SECRET=${JWT_SECRET}
+            export JWT_EXPIRATION=${JWT_EXPIRATION}
             sudo systemctl stop whatiread
             sudo systemctl start whatiread
           '
