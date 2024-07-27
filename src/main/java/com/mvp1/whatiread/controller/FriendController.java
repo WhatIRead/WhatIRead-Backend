@@ -3,19 +3,18 @@ package com.mvp1.whatiread.controller;
 import com.mvp1.whatiread.dto.ApiResponse;
 import com.mvp1.whatiread.dto.FriendDTO;
 import com.mvp1.whatiread.dto.UserProfile;
-import com.mvp1.whatiread.entity.FriendRequest;
 import com.mvp1.whatiread.security.CurrentUser;
 import com.mvp1.whatiread.security.UserPrincipal;
 import com.mvp1.whatiread.service.FriendService;
 import com.mvp1.whatiread.service.UserService;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
+import java.util.List;
 import java.util.Set;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -67,5 +66,17 @@ public class FriendController {
   public ResponseEntity<ApiResponse> deleteFriendRequest(@CurrentUser UserPrincipal currentUser,
       @Valid @RequestBody FriendDTO friendRequest) {
     return friendService.deleteFriendRequest(currentUser.getId(), friendRequest);
+  }
+
+  @GetMapping("/getSentFriendRequests")
+  @Schema(description = "Get all sent friend requests friend requests.")
+  public ResponseEntity<List<FriendDTO>> getSendFriendRequests(@CurrentUser UserPrincipal currentUser) {
+    return null;
+  }
+
+  @GetMapping("/getReceivedFriendRequests")
+  @Schema(description = "Get all received requests friend requests.")
+  public ResponseEntity<List<FriendDTO>> getReceivedFriendRequests(@CurrentUser UserPrincipal currentUser) {
+    return null;
   }
 }
