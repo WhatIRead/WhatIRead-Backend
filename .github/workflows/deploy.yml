@@ -20,49 +20,14 @@ jobs:
       - name: Build with Maven
         run: mvn clean package -DskipTests
 
-      - name: Debug environment variables
-        run: |
-          echo "PRIVATE_KEY: $PRIVATE_KEY"
-          echo "EC2_HOST: $EC2_HOST"
-
-      - name: Save private key
+      - name: Deploy to EC2
         env:
           PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
           HOST: ${{ secrets.EC2_HOST }}
         run: |
-          echo "$PRIVATE_KEY"
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-
-      - name: Copy JAR file to server
-        env:
-          EC2_HOST: ${{ secrets.EC2_HOST }}
-        run: |
-          echo "$PRIVATE_KEY"
-          echo "$EC2_HOST"
-          scp -o StrictHostKeyChecking=no -i private_key target/whatiread.jar ubuntu@${EC2_HOST}:/home/ubuntu/apps/whatiread/
-
-      - name: Restart application on server
-        env:
-          EC2_HOST: ${{ secrets.EC2_HOST }}
-        run: |
-          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@${EC2_HOST} '
+          scp -o StrictHostKeyChecking=no -i private_key target/whatiread.jar ubuntu@${HOST}:/home/ubuntu/apps/whatiread/
+          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@${HOST} '
             sudo systemctl stop whatiread
-            sudo mv /home/ubuntu/apps/whatiread/whatiread.jar /home/ubuntu/apps/whatiread/whatiread_backup.jar
-            sudo mv /home/ubuntu/apps/whatiread/whatiread.jar /home/ubuntu/apps/whatiread/whatiread.jar
             sudo systemctl start whatiread
           '
-
-#      - name: Clean up
-#        run: |
-#          rm private_key
-#
-#      - name: Deploy to EC2
-#        env:
-#          PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
-#          HOST: ${{ secrets.EC2_HOST }}
-#        run: |
-#          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-#          scp -o StrictHostKeyChecking=no -i private_key target/*.jar ubuntu@${EC2_HOST}:/home/ubuntu/apps/whatiread/
-#          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@${HOST} '
-#            sudo systemctl restart whatiread
-#          '
