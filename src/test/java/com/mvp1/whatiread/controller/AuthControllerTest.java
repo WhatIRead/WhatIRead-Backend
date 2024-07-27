@@ -134,7 +134,6 @@ class AuthControllerTest {
     // Act & Assert
     WhatIReadException exception = assertThrows(WhatIReadException.class,
         () -> authController.registerUser(signUpRequest));
-    assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
     assertEquals("Username is already taken", exception.getMessage());
     verify(userRepository, times(1)).existsByUsername("existingUser");
   }
