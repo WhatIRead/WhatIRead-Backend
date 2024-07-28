@@ -4,7 +4,7 @@ server:
 
 openapi:
   dev:
-    url: http://localhost:8085
+    url: https://3pkjggibgi.execute-api.ap-south-2.amazonaws.com/Dev
 
 spring:
   h2:
