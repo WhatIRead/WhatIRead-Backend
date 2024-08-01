@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class OpenAPIConfig {
 
-  @Value("${openapi.dev.url}")
+  @Value("${openapi.dev.url:}")
   private String serverUrl;
 
   @Bean

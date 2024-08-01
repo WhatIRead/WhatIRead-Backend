@@ -15,6 +15,6 @@ public interface ShelfRepository extends JpaRepository<Shelf, Long> {
 
   Set<Book> findBooksById(long shelfId);
 
-  @Query(value = "SELECT s FROM Shelf s WHERE s.id = :shelfId AND s.user.id = :userId")
-  Shelf findByIdAndUserId(@Param("userId") Long userId, @Param("shelfId") Long shelfId);
+  @Query(value = "SELECT s FROM Shelf s WHERE s.id = ?1 AND s.user.id = ?2")
+  Shelf findByIdAndUserId(Long userId, Long shelfId);
 }

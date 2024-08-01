@@ -26,8 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/friend")
 public class FriendController {
 
-  UserService userService;
-  FriendService friendService;
+  private final UserService userService;
+  private final FriendService friendService;
 
   public FriendController(UserService userService, FriendService friendService) {
     this.userService = userService;

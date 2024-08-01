@@ -23,10 +23,10 @@ public class JwtTokenProvider {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenProvider.class);
 
-  @Value(value = "${app.jwtSecret}")
+  @Value(value = "${app.jwtSecret:}")
   private String jwtSecret;
 
-  @Value(value = "${app.jwtExpirationInMs}")
+  @Value(value = "${app.jwtExpirationInMs:}")
   private int jwtExpirationInMs;
 
   public String getJwtFromHeader(HttpServletRequest request) {

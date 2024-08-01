@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.client.HttpServerErrorException.InternalServerError;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @ControllerAdvice
@@ -110,5 +111,18 @@ public class RestControllerExceptionHandler {
     return new ResponseEntity<>(
         new ExceptionResponse(messages, HttpStatus.BAD_REQUEST.getReasonPhrase(),
             HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler({InternalServerError.class})
+  @ResponseBody
+  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+  public ResponseEntity<ApiResponse> resolveException(InternalServerError exception) {
+    System.out.println("Error in internal server error");
+    String message = exception.getMessage();
+    HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+    ApiResponse apiResponse = new ApiResponse();
+    apiResponse.setSuccess(Boolean.FALSE);
+    apiResponse.setMessage(message);
+    return new ResponseEntity<>(apiResponse, status);
   }
 }
