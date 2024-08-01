@@ -28,7 +28,7 @@
     </encoder>
   </appender>
 
-  <property name="HOME_LOG" value="~/apps/whatiread/logs/app.log"/>
+  <property name="HOME_LOG" value="${HOME}/apps/whatiread/logs/app.log"/>
 
   <springProfile name="local">
     <root level="INFO">
