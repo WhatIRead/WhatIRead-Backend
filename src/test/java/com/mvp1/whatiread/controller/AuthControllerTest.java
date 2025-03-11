@@ -17,10 +17,14 @@ import com.mvp1.whatiread.dto.LoginRequest;
 import com.mvp1.whatiread.dto.SignUpRequest;
 import com.mvp1.whatiread.entity.role.Role;
 import com.mvp1.whatiread.entity.role.RoleName;
+import com.mvp1.whatiread.entity.user.User;
 import com.mvp1.whatiread.exception.WhatIReadException;
 import com.mvp1.whatiread.repository.RoleRepository;
 import com.mvp1.whatiread.repository.UserRepository;
 import com.mvp1.whatiread.security.JwtTokenProvider;
+import com.mvp1.whatiread.utils.Utils;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -136,5 +140,73 @@ class AuthControllerTest {
         () -> authController.registerUser(signUpRequest));
     assertEquals("Username is already taken", exception.getMessage());
     verify(userRepository, times(1)).existsByUsername("existingUser");
+  }
+
+  @Test
+  public void testRegisterUser_EmailAlreadyTaken() {
+    SignUpRequest signUpRequest = SignUpRequest.builder().firstName(faker.name().firstName())
+        .lastName(faker.name().lastName()).username(faker.name().username()).email(faker.internet()
+            .emailAddress()).password(faker.internet().password()).build();
+    when(userRepository.existsByEmail(signUpRequest.getEmail())).thenReturn(true);
+
+    // Act & Assert
+    WhatIReadException exception = assertThrows(WhatIReadException.class,
+        () -> authController.registerUser(signUpRequest));
+    assertEquals("Email is already taken", exception.getMessage());
+    verify(userRepository, times(1)).existsByEmail(signUpRequest.getEmail());
+  }
+
+  @Test
+  public void testRegisterUser_RoleNotFound() {
+    SignUpRequest signUpRequest = SignUpRequest.builder().firstName(faker.name().firstName())
+        .lastName(faker.name().lastName()).username(faker.name().username()).email(faker.internet()
+            .emailAddress()).password(faker.internet().password()).build();
+    when(userRepository.existsByUsername(signUpRequest.getUsername())).thenReturn(false);
+    when(userRepository.existsByEmail(signUpRequest.getEmail())).thenReturn(false);
+    when(roleRepository.findByName(RoleName.ROLE_USER)).thenReturn(Optional.empty());
+
+    // Act & Assert
+    WhatIReadException exception = assertThrows(WhatIReadException.class,
+        () -> authController.registerUser(signUpRequest));
+    assertEquals("User role not set", exception.getMessage());
+    verify(userRepository, times(1)).existsByUsername(signUpRequest.getUsername());
+    verify(userRepository, times(1)).existsByEmail(signUpRequest.getEmail());
+    verify(roleRepository, times(1)).findByName(RoleName.ROLE_USER);
+  }
+
+  @Test
+  public void testAuthenticateUser_InvalidCredentials() {
+    LoginRequest loginRequest = new LoginRequest();
+    loginRequest.setUsernameOrEmail(faker.internet().emailAddress());
+    loginRequest.setPassword(faker.internet().password());
+    when(authenticationManager.authenticate(
+        any(UsernamePasswordAuthenticationToken.class))).thenThrow(new RuntimeException("Invalid credentials"));
+
+    // Act & Assert
+    RuntimeException exception = assertThrows(RuntimeException.class,
+        () -> authController.authenticateUser(loginRequest));
+    assertEquals("Invalid credentials", exception.getMessage());
+    verify(authenticationManager, times(1)).authenticate(
+        any(UsernamePasswordAuthenticationToken.class));
+  }
+
+  @Test
+  public void testRegisterUser_InvalidRole() {
+    SignUpRequest signUpRequest = SignUpRequest.builder().firstName(faker.name().firstName())
+        .lastName(faker.name().lastName()).username(faker.name().username()).email(faker.internet()
+            .emailAddress()).password(faker.internet().password()).build();
+    when(userRepository.existsByUsername(signUpRequest.getUsername())).thenReturn(false);
+    when(userRepository.existsByEmail(signUpRequest.getEmail())).thenReturn(false);
+    when(roleRepository.findByName(RoleName.ROLE_USER)).thenReturn(Optional.of(new Role(1L, RoleName.ROLE_USER)));
+    when(roleRepository.findByName(RoleName.ROLE_ADMIN)).thenReturn(Optional.empty());
+
+    // Act & Assert
+    WhatIReadException exception = assertThrows(WhatIReadException.class,
+        () -> authController.registerUser(signUpRequest));
+    assertEquals("User role not set", exception.getMessage());
+    verify(userRepository, times(1)).existsByUsername(signUpRequest.getUsername());
+    verify(userRepository, times(1)).existsByEmail(signUpRequest.getEmail());
+    verify(roleRepository, times(1)).findByName(RoleName.ROLE_USER);
+    verify(roleRepository, times(1)).findByName(RoleName.ROLE_ADMIN);
   }
 }
